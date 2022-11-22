@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 12:06:24 by pfrances          #+#    #+#              #
-#    Updated: 2022/11/22 12:32:56 by pfrances         ###   ########.fr        #
+#    Updated: 2022/11/22 16:50:44 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,7 +77,6 @@ clean:
 fclean: clean
 	$(RM) $(PRINTF_LIB)
 	$(RM) $(GNL_LIB)
-	$(RM) $(MLX_DIR)
 	$(RM) $(NAME)
 
 re: fclean all
