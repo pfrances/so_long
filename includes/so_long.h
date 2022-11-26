@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/26 20:24:01 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/26 20:30:55 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ typedef struct s_img
 	int		bpp;
 	int		line_len;
 	int		endian;
+	int		width;
+	int		height;
 }	t_img;
 
 typedef struct s_data
@@ -52,6 +54,7 @@ typedef struct s_data
 	void	*mlx_ptr;
 	void	*win_ptr;
 	t_img	wall;
+	t_img	img;
 	int		cur_img;
 }	t_data;
 
