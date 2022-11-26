@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/26 19:45:19 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/26 20:24:01 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #define RED_PIXEL 0xFF0000
 #define GREEN_PIXEL 0xFF00
 #define WHITE_PIXEL 0xFFFFFF
+#define WALL_XPM_PATH "../xpm_files/wall.xpm"
 
 typedef struct s_xpm
 {
@@ -36,12 +37,6 @@ typedef struct s_xpm
 	size_t	char_per_pixel;
 	char	**pixels;
 }	t_xpm;
-
-typedef struct s_sprites
-{
-	t_xpm	wall;
-}	t_sprites;
-
 
 typedef struct s_img
 {
@@ -56,7 +51,7 @@ typedef struct s_data
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
-	t_img	img;
+	t_img	wall;
 	int		cur_img;
 }	t_data;
 

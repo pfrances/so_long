@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:24:13 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/26 20:08:12 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/26 20:26:48 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,10 @@ int	main(void)
 	data.mlx_ptr = mlx_init();
 	if (data.mlx_ptr == NULL)
 		return (1);
+	data.wall.mlx_img = mlx_xpm_file_to_image(&data->mlx_ptr, W_PATH,
+			&data->wall.width, &data->wall.height);
+	data.wall.addr = mlx_get_data_addr(&data->wall.mlx_img, &data->wall.bpp,
+			&data->wall->line_len, &data->wall.endian);
 	data.win_ptr = mlx_new_window(data.mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "so_long");
 	if (data.win_ptr == NULL)
 	{
