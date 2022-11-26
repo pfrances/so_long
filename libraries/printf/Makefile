@@ -3,37 +3,28 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+         #
+#    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/04/05 08:33:13 by pfrances          #+#    #+#              #
-#    Updated: 2022/11/26 19:11:28 by pfrances         ###   ########.fr        #
+#    Created: 2022/06/07 22:35:44 by pfrances          #+#    #+#              #
+#    Updated: 2022/06/16 15:21:09 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = so_long
-CC = clang
-#CFLAGS = -Wall -Wextra -Werror
-INCLUDES = -L -lX11 -lXext -lmlx
-SRCS =	so_long.c read_all.c img_analyser.c
+NAME = libftprintf.a
+CFLAGS = -Wall -Wextra -Werror
+SRCS = ft_printf.c ft_printf_utils.c
 OBJS = $(SRCS:.c=.o)
-LIBFT_DIR = libft
-LIBFT = $(LIBFT_DIR)/libft.a
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(INCLUDES) $(LIBFT) -o $(NAME)
-
-$(LIBFT):
-	make -C $(LIBFT_DIR) bonus
+$(NAME): $(OBJS)
+	ar -rcs $(NAME) $(OBJS)
 
 clean:
-	rm -f $(OBJS)
-	make -C $(LIBFT_DIR) clean 
+	rm -f $(OBJS) $(B_OBJS)
 
 fclean: clean
 	rm -f $(NAME)
-	rm -f $(LIBFT)
 
 re: fclean all
 
