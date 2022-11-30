@@ -3,47 +3,85 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+         #
+#    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 12:06:24 by pfrances          #+#    #+#              #
-#    Updated: 2022/11/26 19:49:12 by pfrances         ###   ########.fr        #
+#    Updated: 2022/11/30 16:46:29 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = so_long
-CC = gcc
-FILES = so_long.c
+CC = cc
 SRCS_DIR = srcs
 OBJS_DIR = objs
-SRCS =	$(addprefix $(SRCS_DIR)/, so_long.c)
+SRCS =	$(addprefix $(SRCS_DIR)/,	check_map.c	\
+									end_game.c	\
+									images.c	\
+									init.c		\
+									loop.c		\
+									map.c		\
+									so_long.c)
 OBJS = $(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o))
-CFLAGS = #-Wall -Wextra -Werror
-INCLUDES = -I includes -I/usr/X11/include
-LIBFT_PATH = ./libraries/libft
-MLX_PATH = ./libraries/minilibx
-X11_PATH = /usr/X11/include/../lib
-LIBS_PATH = -L$(LIBFT_PATH) -L$(MLX_PATH) -L$(X11_PATH)
-LIBS = -lft -lmlx_Darwin -lXext -lX11 -framework OpenGL -framework AppKit
+CFLAGS = -g #-Wall -Wextra -Werror
+LIBFT_DIR = ./libraries/libft
+LIBFT = $(LIBFT_DIR)/libft.a
+GNL_DIR = ./libraries/get_next_line
+GNL = $(GNL_DIR)/get_next_line.a
+MLX_DIR = ./libraries/minilibx
+INCLUDES = -I includes
+DEFINE_VARS = -D $(ESC) -D $(W) -D $(A) -D $(S) -D $(D) -D $(FRAMERATE) -D $(ADJUST)
+
+#--------------------------------------------------------------------------#
+
+OS = $(shell uname -s)
+
+ifeq ($(OS),Linux)
+ESC = ESC=65307
+W = W=119
+A = A=97
+S = S=115
+D = D=100
+FRAMERATE = FRAMERATE=1000
+ADJUST = ADJUST=0
+MLX_LIBS = -I $(MLX_DIR) -L$(MLX_DIR) -lmlx -lXext -lX11 $(MLX_DIR)/libmlx.a
+else
+ESC = ESC=53
+W = W=13
+A = A=0
+S = S=1
+D = D=2
+FRAMERATE = FRAMERATE=200
+ADJUST = ADJUST=20
+MLX_LIBS = -lft -lmlx_Darwin -lXext -lX11 -framework OpenGL -framework AppKit
+endif
+
+#--------------------------------------------------------------------------#
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	make -C $(LIBFT_PATH)
-	make -C $(MLX_PATH)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(LIBS_PATH) $(LIBS)
+$(NAME): $(OBJS) $(LIBFT) $(GNL)
+	make -C $(LIBFT_DIR)
+	make -C $(MLX_DIR)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) $(GNL) $(MLX_LIBS) -o $(NAME)
 
-$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
-	$(CC) $(CFLAGS) $(INCLUDES) $(DEFINE_VARS) -c -o $@ $<
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(LIBFT) $(GNL)
+	$(CC) $(CFLAGS) $(INCLUDES) $(DEFINE_VARS) $(LIBFT) $(GNL) -c $< -o $@
+
+$(LIBFT):
+	make -C $(LIBFT_DIR) bonus
+
+$(GNL):
+	make -C $(GNL_DIR)
 
 clean:
 	rm -f $(OBJS)
-	make clean -C $(LIBFT_PATH)
-	make clean -C $(MLX_PATH)
+	make -C $(LIBFT_DIR) clean
+	make -C $(GNL_DIR) clean
 
-fclean:
-	rm -f $(OBJS) $(NAME)
-	make fclean -C $(LIBFT_PATH)
-	make clean -C $(MLX_PATH)
+fclean: clean
+	rm -f $(NAME)
+	rm -f $(LIBFT)
+	rm -f $(GNL)
 
 re: fclean all
 

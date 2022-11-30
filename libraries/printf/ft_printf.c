@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 17:19:48 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/22 12:15:23 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:18:20 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static int	is_an_option(char c)
 	return (FALSE);
 }
 
-static void	distribute(va_list args, size_t *result, size_t *last_pos, const char *ptr)
+static void
+	distribute(va_list args, size_t *result, size_t *last_pos, const char *ptr)
 {
 	if (*ptr == 'c')
 		*result += print_c(va_arg(args, int));
@@ -48,6 +49,13 @@ static void	distribute(va_list args, size_t *result, size_t *last_pos, const cha
 	else if (*ptr == '%')
 		*result += write(1, "%%", 1);
 	*last_pos += 2;
+}
+
+int	check_result_overflow(size_t result)
+{
+	if (result > __INT_MAX__)
+		return (-1);
+	return ((int)result);
 }
 
 int	ft_printf(const char *str, ...)
@@ -76,7 +84,5 @@ int	ft_printf(const char *str, ...)
 		i++;
 	}
 	va_end(args);
-	if (result > __INT_MAX__)
-		return (-1);
-	return ((int)result);
+	return (check_result_overflow(result));
 }
