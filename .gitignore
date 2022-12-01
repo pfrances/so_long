@@ -1,0 +1,5 @@
+*.o
+*libft.a
+*get_next_line.a
+*libftprintf.a
+so_long
