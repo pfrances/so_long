@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/30 17:41:34 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/01 12:53:55 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ void	render_map(t_data *data);
 
 bool	set_map(t_map *map, char *filename);
 bool	check_map(t_map *map, char *filename);
+void	put_in_loop(t_data *data);
 
 #endif

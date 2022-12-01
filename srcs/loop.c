@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:00:47 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/30 16:40:43 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/01 12:53:40 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	render(t_data *data)
 	return (0);
 }
 
-bool	put_in_loop(t_data *data)
+void	put_in_loop(t_data *data)
 {
 	mlx_loop_hook(data->mlx_ptr, &render, data);
 	mlx_hook(data->win_ptr, ClientMessage, StructureNotifyMask,

@@ -3,26 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 16:42:35 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/30 18:13:54 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/01 12:52:04 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-bool	check_filename(char *filename)
+bool	check_filename(char *str)
 {
 	size_t	filename_len;
 	size_t	extension_len;
-
+	char	*filename;
+	
+	filename = ft_strrchr(str, '/');
+	if (filename == NULL)
+		filename = str;
+	else
+		filename++;
 	filename_len = ft_strlen(filename);
 	extension_len = ft_strlen(MAP_FILE_EXTENSION);
-	if (filename_len < extension_len + 1)
+	if (filename_len <= extension_len)
 		return (false);
 	if (ft_strncmp(MAP_FILE_EXTENSION,
-		&filename[filename_len - extension_len], extension_len - 1) != 0)
+		&filename[filename_len - extension_len], extension_len) != 0)
 		return (false);
 	return (true);
 }
@@ -30,7 +36,6 @@ bool	check_filename(char *filename)
 bool	check_height(t_map *map, int fd)
 {
 	size_t	i;
-	size_t	width;
 	ssize_t	read_count;
 	char	str[BUFFER_SIZE];
 
@@ -52,11 +57,14 @@ bool	check_height(t_map *map, int fd)
 			i++;
 		}
 	}
+	return (map->height >= 3);
 }
+
 bool	check_width(t_map *map)
 {
 	size_t	i;
 	size_t	len;
+	size_t	cur_len;
 
 	len = ft_strlen(map->array[0]);
 	if (len < 3)
@@ -64,7 +72,8 @@ bool	check_width(t_map *map)
 	i = 1;
 	while (i < map->height)
 	{
-		if (ft_strlen(map->array[i]) != len)
+		cur_len = ft_strlen(map->array[i]);
+		if (cur_len != len && map->array[i][cur_len - 1] == '\n')
 			return (false);
 		i++;
 	}
@@ -102,6 +111,7 @@ bool	check_map_content(t_map *map)
 		}
 		y++;
 	}
+	return (true);
 }
 
 bool	set_array(t_map *map, char *filename)

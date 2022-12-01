@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   images.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 10:02:05 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/30 16:52:21 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/01 12:53:14 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ bool	set_background(t_data *data, t_img *img)
 	img->mlx_img = mlx_new_image(data->mlx_ptr, data->bsize, data->bsize);
 	img->addr = mlx_get_data_addr(img->mlx_img, &img->bpp,
 		&img->line_len, &img->endian);
+	return (img->mlx_img != NULL);
 }
 
 bool	set_xpm_img(void *mlx_ptr, t_img *img, char *path)
@@ -75,7 +76,8 @@ bool	images_init(t_data *data)
 		return (false);
 	if (set_xpm_img(data->mlx_ptr, &data->exit_img, EXIT_XPM_PATH) == false)
 		return (false);
-	set_background(data, &data->empty_img);
+	if (set_background(data, &data->empty_img) == false)
+		return (false);
 	render_background(data, &data->empty_img);
 	return (true);
 }
