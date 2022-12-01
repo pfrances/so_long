@@ -1,16 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map2.c                                       :+:      :+:    :+:   */
+/*   check_map_content.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:46:33 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/01 15:44:49 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/01 22:55:16 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
+
+bool	is_this_object_ok(t_map *map, char c, size_t x, size_t y)
+{
+	if ((x == 0 && c != WALL)
+		|| (x == map->width - 1 && c != WALL))
+		return (false);
+	else if (c == WALL || c == EMPTY)
+		;
+	else if (c == PLAYER && map->has_player == false)
+	{
+		map->start_pos.x = x;
+		map->start_pos.y = y;
+		map->has_player = true;
+	}
+	else if (c == COLLECTIBLE)
+		map->nbr_of_collectibles++;
+	else if (c == EXIT && map->has_exit == false)
+	{
+		map->exit_pos.x = x;
+		map->exit_pos.y = y;
+		map->has_exit = true;
+	}
+	else
+		return (false);
+}
 
 bool	check_line_content(t_map *map, char *line, size_t y)
 {
@@ -19,25 +44,7 @@ bool	check_line_content(t_map *map, char *line, size_t y)
 	x = 0;
 	while (x < map->width)
 	{
-		if ((x == 0 && line[x] == WALL) 
-			|| (x == map->width - 1 && line[x] == WALL)
-			|| line[x] == EMPTY)
-			;
-		else if (line[x] == PLAYER && map->has_player == false)
-		{
-			map->start_pos.x = x;
-			map->start_pos.y = y;
-			map->has_player = true;
-		}
-		else if (line[x] == COLLECTIBLE)
-			map->nbr_of_collectibles++;
-		else if (line[x] == EXIT && map->has_exit == false)
-		{
-			map->exit_pos.x = x;
-			map->exit_pos.y = y;
-			map->has_exit = true;
-		}
-		else
+		if (is_this_object_ok(map, line[x], x, y) == false)
 			return (false);
 		x++;
 	}
@@ -68,6 +75,7 @@ bool	check_content(t_map *map)
 	i = 1;
 	map->has_player = false;
 	map->has_exit = false;
+	map->nbr_of_collectibles = 0;
 	while (map->array[i + 1] != NULL)
 	{
 		if (ft_strlen(map->array[i]) != map->width)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+         #
+#    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 12:06:24 by pfrances          #+#    #+#              #
-#    Updated: 2022/12/01 14:46:24 by pfrances         ###   ########.fr        #
+#    Updated: 2022/12/01 22:55:08 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,18 +14,18 @@ NAME = so_long
 CC = cc
 SRCS_DIR = srcs
 OBJS_DIR = objs
-SRCS =	$(addprefix $(SRCS_DIR)/,	check_map1.c	\
-									check_map2.c	\
-									check_map3.c	\
-									end_game.c		\
-									images.c		\
-									init.c			\
-									loop.c			\
-									map.c			\
-									read_all.c		\
+SRCS =	$(addprefix $(SRCS_DIR)/,	check_map.c			\
+									check_map_content.c	\
+									check_playability.c	\
+									end_game.c			\
+									images.c			\
+									init.c				\
+									loop.c				\
+									map.c				\
+									read_all.c			\
 									so_long.c)
 OBJS = $(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o))
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g #-Wall -Wextra -Werror
 LIBFT_DIR = ./libraries/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 GNL_DIR = ./libraries/get_next_line
@@ -57,7 +57,7 @@ D = D=2
 FRAMERATE = FRAMERATE=200
 ADJUST = ADJUST=20
 MLX = $(MLX_DIR)/libmlx_Darwin.a
-INCLUDES += -I/usr/X11/include 
+INCLUDES += -I/usr/X11/include
 MLX_LIBS = -L$(MLX_DIR) -L/usr/X11/include/../lib -lmlx_Darwin -lXext -lX11 -framework OpenGL -framework AppKit
 endif
 

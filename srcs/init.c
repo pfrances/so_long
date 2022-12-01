@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 11:24:47 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/01 16:22:42 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/01 22:16:40 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,17 @@ bool	init(t_data *data, int argc, char *argv[])
 	if (argc != 2)
 		return (false);
 	if (check_map(&data->map, argv[1]) == false)
+	{
+		if (data->map.array != NULL)
+			free_map(data->map.array);
 		return (false);
+	}
 	init_data(data);
 	if (init_window(data) == false)
+	{
+		free_map(data->map.array);
 		return (false);
+	}
 	if (images_init(data) == false)
 		return (false);
 	put_in_loop(data);

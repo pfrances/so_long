@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map1.c                                       :+:      :+:    :+:   */
+/*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:45:46 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/01 16:21:17 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/01 22:55:21 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,14 @@ bool	get_file_content(t_map *map, char *filename)
 
 bool	check_map(t_map *map, char *filename)
 {
+	map->array = NULL;
 	if (check_filename(filename) == false)
 		return (false);
 	if (get_file_content(map, filename) == false)
 		return (false);
 	if (check_content(map) == false)
 		return (false);
-	// if (are_map_playble(map) == false)
-	// 	return (false);
-	printf("pass\n");
+	if (are_map_playble(map) == false)
+		return (false);
 	return (true);
 }
