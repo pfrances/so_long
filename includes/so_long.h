@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/01 12:53:55 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/01 17:00:33 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,14 @@
 # define COLLECTIBLE 'C'
 # define EXIT 'E'
 
+typedef struct s_borders
+{
+	bool	top;
+	bool	bottom;
+	bool	left;
+	bool	right;
+}	t_borders;
+
 typedef struct s_position
 {
 	int	x;
@@ -62,10 +70,14 @@ typedef struct s_img
 typedef struct s_map
 {
 	char		**array;
+	char		**flood_floor_array;
 	size_t		height;
 	size_t		width;
 	size_t		nbr_of_collectibles;
+	bool		has_player;
+	bool		has_exit;
 	t_position	start_pos;
+	t_position	exit_pos;
 }	t_map;
 
 typedef struct s_data
@@ -96,5 +108,10 @@ void	render_map(t_data *data);
 bool	set_map(t_map *map, char *filename);
 bool	check_map(t_map *map, char *filename);
 void	put_in_loop(t_data *data);
+char	*read_all(int fd);
+bool	are_map_playble(t_map *map);
+bool	check_content(t_map *map);
+bool	are_map_playble(t_map *map);
+void	free_map(char **map_array);
 
 #endif

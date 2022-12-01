@@ -6,7 +6,7 @@
 #    By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 12:06:24 by pfrances          #+#    #+#              #
-#    Updated: 2022/12/01 12:51:29 by pfrances         ###   ########.fr        #
+#    Updated: 2022/12/01 14:46:24 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,15 @@ NAME = so_long
 CC = cc
 SRCS_DIR = srcs
 OBJS_DIR = objs
-SRCS =	$(addprefix $(SRCS_DIR)/,	check_map.c	\
-									end_game.c	\
-									images.c	\
-									init.c		\
-									loop.c		\
-									map.c		\
+SRCS =	$(addprefix $(SRCS_DIR)/,	check_map1.c	\
+									check_map2.c	\
+									check_map3.c	\
+									end_game.c		\
+									images.c		\
+									init.c			\
+									loop.c			\
+									map.c			\
+									read_all.c		\
 									so_long.c)
 OBJS = $(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o))
 CFLAGS = -Wall -Wextra -Werror

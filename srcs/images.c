@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 10:02:05 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/01 12:53:14 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/01 14:13:56 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ bool	set_background(t_data *data, t_img *img)
 {
 	img->mlx_img = mlx_new_image(data->mlx_ptr, data->bsize, data->bsize);
 	img->addr = mlx_get_data_addr(img->mlx_img, &img->bpp,
-		&img->line_len, &img->endian);
+			&img->line_len, &img->endian);
 	return (img->mlx_img != NULL);
 }
 
