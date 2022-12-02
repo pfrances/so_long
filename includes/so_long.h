@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/02 10:11:58 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/02 19:44:18 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <stdbool.h>
-# include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
 # define BUFFER_SIZE 1024
@@ -37,13 +36,51 @@
 # define COLLECTIBLE 'C'
 # define EXIT 'E'
 
-typedef struct s_borders
+# define ERROR_MSG "Error."
+# define WRONG_NB_OF_ARGS_MSG "The programm take only one argument: map path."
+# define WRONG_MAP_NAME_MSG "The map name should have a '.ber' extension."
+# define FAILED_AT_OPENING_MAP_MSG "Failed at opening the map."
+# define FAILED_AT_READING_MAP_MSG "Failed at reading the map."
+# define FAILED_AT_CLOSING_MAP_MSG "Failed at closing the map."
+# define HAS_EMPTY_LINE_MSG "The map has empty line(s)."
+# define FAILED_ON_MEMORY_ALLOCATION_MSG "Failed on memory allocation."
+# define NOT_BORDERED_BY_WALL_MSG "The map has to be bordered by walls."
+# define HAS_MORE_THAN_ONE_PLAYER_MSG "There are more than one player."
+# define HAS_MORE_THAN_ONE_EXIT_MSG "There are more than one exit."
+# define HAS_NO_COLLECTIBLE_MSG "There no collectible."
+# define WRONG_SHAPE_OF_MAP_MSG "The map should be a rectangle."
+# define MAP_NOT_PLAYABLE_MSG "The map is not playable."
+# define FAILED_AT_INIT_MLX_MSG "Failed at init MLX."
+# define FAILED_AT_INIT_WINDOW_MSG "Failed at init window."
+# define FAILED_AT_INIT_IMGS_MSG "Failed at init images."
+# define MLX_LOOP_ISSUE_MSG "Issue occured on MLX loop."
+
+typedef enum e_error
 {
-	bool	top;
-	bool	bottom;
-	bool	left;
-	bool	right;
-}	t_borders;
+	NONE,
+	WRONG_NB_OF_ARGS,
+	WRONG_MAP_NAME,
+	FAILED_AT_OPENING_MAP,
+	FAILED_AT_READING_MAP,
+	FAILED_AT_CLOSING_MAP,
+	HAS_EMPTY_LINE,
+	FAILED_ON_MEMORY_ALLOCATION,
+	NOT_BORDERED_BY_WALL,
+	HAS_MORE_THAN_ONE_PLAYER,
+	HAS_MORE_THAN_ONE_EXIT,
+	HAS_NO_COLLECTIBLE,
+	WRONG_SHAPE_OF_MAP,
+	FAILED_ON_MEMORY_ALLOCATION_FLOODED,
+	MAP_NOT_PLAYABLE,
+	FAILED_AT_INIT_MLX,
+	FAILED_AT_INIT_WINDOW,
+	FAILED_AT_INIT_WALL_IMG,
+	FAILED_AT_INIT_PLAYER_IMG,
+	FAILED_AT_INIT_COLLECTIBLES_IMG,
+	FAILED_AT_INIT_EXIT_IMG,
+	FAILED_AT_INIT_EMPTY_IMG,
+	MLX_LOOP_ISSUE
+}	t_error;
 
 typedef struct s_position
 {
@@ -71,7 +108,7 @@ typedef struct s_map
 	size_t		nbr_of_collectibles;
 	bool		has_player;
 	bool		has_exit;
-	t_position	start_pos;
+	t_position	player_pos;
 	t_position	exit_pos;
 }	t_map;
 
@@ -86,25 +123,40 @@ typedef struct s_data
 	t_img		exit_img;
 	int			cur_img;
 	t_map		map;
-	t_position	pos;
 	int			bsize;
-	int			move_count;
+	size_t		move_count;
 	int			window_width;
 	int			window_height;
 }	t_data;
 
+/*		init.c				*/
 bool	init(t_data *data, int argc, char *argv[]);
+
+/*		images_init.c		*/
 bool	images_init(t_data *data);
-void	destroy_images(t_data *data);
-int		destroy_window(t_data *data);
-void	end_game(t_data *data);
-void	render_map(t_data *data);
+
+/*		check_map.c			*/
 bool	check_map(t_map *map, char *filename);
-void	put_in_loop(t_data *data);
-char	*read_all(int fd);
-bool	are_map_playble(t_map *map);
+
+/*		check_content.c		*/
 bool	check_content(t_map *map);
+
+/*		check_playability	*/
 bool	are_map_playble(t_map *map);
+
+/*		end_game.c			*/
+int		end_game(t_data *data);
+int		destroy_window(t_data *data);
 void	free_map(char **map_array);
+
+/*		render_map.c		*/
+void	render_map(t_data *data);
+
+/*		loop.c				*/
+void	put_in_loop(t_data *data);
+int		deal_key(int key, t_data *data);
+
+/*		read_all.c			*/
+char	*read_all(int fd);
 
 #endif

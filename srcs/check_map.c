@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:45:46 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/01 22:55:21 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/02 19:21:34 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,16 @@ bool	get_file_content(t_map *map, char *filename)
 	if (fd < 0)
 		return (false);
 	content = read_all(fd);
-	close(fd);
 	if (content == NULL)
+	{
+		close(fd);
 		return (false);
+	}
+	if (close(fd) == NULL)
+	{
+		free(content);
+		return (false);
+	}
 	if (check_empty_line(content) == false)
 		return (false);
 	map->array = ft_split(content, '\n');

@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:46:53 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/01 22:55:25 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/02 19:27:29 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ bool	flooded_floor_check(char **array)
 	while (array[y] != NULL)
 	{
 		x = 0;
-		printf("line[%ld]: %s\n", y, array[y]);
 		while (array[y][x] != '\0')
 		{
 			if (array[y][x] == EXIT || array[y][x] == COLLECTIBLE)
@@ -51,6 +50,8 @@ bool	are_map_playble(t_map *map)
 	bool	result;
 
 	map->flood_floor_array = malloc(sizeof(char *) * (map->height + 1));
+	if (map->flood_floor_array == NULL)
+		return (false);
 	i = 0;
 	while (i < map->height)
 	{
@@ -65,7 +66,7 @@ bool	are_map_playble(t_map *map)
 		i++;
 	}
 	map->flood_floor_array[i] = NULL;
-	flood_floor(map, map->start_pos.x, map->start_pos.y);
+	flood_floor(map, map->player_pos.x, map->player_pos.y);
 	result = flooded_floor_check(map->flood_floor_array);
 	free_map(map->flood_floor_array);
 	return (result);

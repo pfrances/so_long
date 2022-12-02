@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:46:33 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/02 08:34:34 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/02 15:22:53 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ bool	is_this_object_ok(t_map *map, char c, size_t x, size_t y)
 		;
 	else if (c == PLAYER && map->has_player == false)
 	{
-		map->start_pos.x = x;
-		map->start_pos.y = y;
+		map->player_pos.x = x;
+		map->player_pos.y = y;
 		map->has_player = true;
 	}
 	else if (c == COLLECTIBLE)
