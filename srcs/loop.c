@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfrances <pfrances@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:00:47 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/01 12:53:40 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/02 10:09:34 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 int	deal_key(int key, t_data *data)
 {
-	printf("PressKey : %d | XK_Escape : %d\n", key, XK_Escape);
 	if (key == XK_Escape)
-	{
 		end_game(data);
-	}
+	if (key == XK_w)
+		ft_printf("bonjour\n");
 	return (0);
 }
 

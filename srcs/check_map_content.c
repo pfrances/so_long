@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:46:33 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/01 22:55:16 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/02 08:34:34 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ bool	is_this_object_ok(t_map *map, char c, size_t x, size_t y)
 	}
 	else
 		return (false);
+	return (true);
 }
 
 bool	check_line_content(t_map *map, char *line, size_t y)

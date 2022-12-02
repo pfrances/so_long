@@ -6,7 +6,7 @@
 #    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 12:06:24 by pfrances          #+#    #+#              #
-#    Updated: 2022/12/01 22:55:08 by pfrances         ###   ########.fr        #
+#    Updated: 2022/12/02 10:18:10 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,19 +18,20 @@ SRCS =	$(addprefix $(SRCS_DIR)/,	check_map.c			\
 									check_map_content.c	\
 									check_playability.c	\
 									end_game.c			\
-									images.c			\
+									images_init.c		\
 									init.c				\
 									loop.c				\
-									map.c				\
+									render_map.c		\
 									read_all.c			\
 									so_long.c)
 OBJS = $(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o))
-CFLAGS = -g #-Wall -Wextra -Werror
-LIBFT_DIR = ./libraries/libft
+CFLAGS = -g -Wall -Wextra -Werror
+LIBS_DIR = ./libraries
+LIBFT_DIR = $(LIBS_DIR)/libft
 LIBFT = $(LIBFT_DIR)/libft.a
-GNL_DIR = ./libraries/get_next_line
-GNL = $(GNL_DIR)/get_next_line.a
-MLX_DIR = ./libraries/minilibx
+FT_PRINTF_DIR = $(LIBS_DIR)/ft_printf
+FT_PRINTF = $(FT_PRINTF_DIR)/ft_printf.a
+MLX_DIR = $(LIBS_DIR)/minilibx
 INCLUDES = -I includes
 DEFINE_VARS = -D $(ESC) -D $(W) -D $(A) -D $(S) -D $(D) -D $(FRAMERATE) -D $(ADJUST)
 
@@ -65,8 +66,8 @@ endif
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT) $(GNL) $(MLX)
-	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) $(GNL) $(MLX_LIBS) -o $(NAME)
+$(NAME): $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX_LIBS) -o $(NAME)
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(MLX)
 	$(CC) $(CFLAGS) $(INCLUDES) $(DEFINE_VARS) -c $< -o $@
@@ -74,8 +75,8 @@ $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(MLX)
 $(LIBFT):
 	make -C $(LIBFT_DIR) bonus
 
-$(GNL):
-	make -C $(GNL_DIR)
+$(FT_PRINTF):
+	make -C $(FT_PRINTF_DIR)
 
 $(MLX):
 	make -C $(MLX_DIR)
@@ -83,13 +84,13 @@ $(MLX):
 clean:
 	rm -f $(OBJS)
 	make -C $(LIBFT_DIR) clean
-	make -C $(GNL_DIR) clean
+	make -C $(FT_PRINTF_DIR) clean
 	make -C $(MLX_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
 	rm -f $(LIBFT)
-	rm -f $(GNL)
+	rm -f $(FT_PRINTF)
 
 re: fclean all
 

@@ -6,15 +6,14 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/01 22:50:56 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/02 10:11:58 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
-# include <stdlib.h>
 # include "../libraries/libft/includes/libft.h"
-# include "../libraries/get_next_line/includes/get_next_line.h"
+# include "../libraries/ft_printf/ft_printf.h"
 # include "../libraries/minilibx/mlx.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
@@ -23,13 +22,9 @@
 # include <fcntl.h>
 # include <stdbool.h>
 # include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
 # define BUFFER_SIZE 1024
-# define WINDOW_WIDTH 600
-# define WINDOW_HEIGHT 300
-# define BLACK_PIXEL 0x000000
-# define RED_PIXEL 0xFF0000
-# define GREEN_PIXEL 0x1E8449
-# define WHITE_PIXEL 0xFFFFFF
 # define MAP_FILE_EXTENSION ".ber"
 # define WALL_XPM_PATH "./xpm_files/wall.xpm"
 # define EMPTY_XPM_PATH "./xpm_files/empty.xpm"
@@ -104,8 +99,6 @@ void	destroy_images(t_data *data);
 int		destroy_window(t_data *data);
 void	end_game(t_data *data);
 void	render_map(t_data *data);
-
-bool	set_map(t_map *map, char *filename);
 bool	check_map(t_map *map, char *filename);
 void	put_in_loop(t_data *data);
 char	*read_all(int fd);
