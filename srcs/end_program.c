@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 09:47:22 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/03 11:23:57 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/03 11:43:03 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	print_error_messages(char *error_msg)
 {
-	ft_putstr_fd(ERROR_MSG, STDERR_FILENO);
-	ft_putstr_fd(error_msg, STDERR_FILENO);
+	ft_putendl_fd(ERROR_MSG, STDERR_FILENO);
+	ft_putendl_fd(error_msg, STDERR_FILENO);
 }
 
 void	free_map(char **map_array)
