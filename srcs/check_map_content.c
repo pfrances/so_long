@@ -6,53 +6,54 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:46:33 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/02 15:22:53 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/03 10:57:17 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-bool	is_this_object_ok(t_map *map, char c, size_t x, size_t y)
+void	check_objects_on_map(t_data *data, char c, size_t x, size_t y)
 {
 	if ((x == 0 && c != WALL)
-		|| (x == map->width - 1 && c != WALL))
-		return (false);
+		|| (x == data->map.width - 1 && c != WALL))
+		end_program(data, NOT_BORDERED_BY_WALL, NOT_BORDERED_BY_WALL_MSG);
 	else if (c == WALL || c == EMPTY)
 		;
-	else if (c == PLAYER && map->has_player == false)
+	else if (c == PLAYER)
 	{
-		map->player_pos.x = x;
-		map->player_pos.y = y;
-		map->has_player = true;
+		if (data->map.has_player == true)
+			end_program(data, TOO_MUCH_PLAYER, TO_MUCH_PLAYER_MSG);
+		data->map.player_pos.x = x;
+		data->map.player_pos.y = y;
+		data->map.has_player = true;
 	}
 	else if (c == COLLECTIBLE)
-		map->nbr_of_collectibles++;
-	else if (c == EXIT && map->has_exit == false)
+		data->map.nbr_of_collectibles++;
+	else if (c == EXIT)
 	{
-		map->exit_pos.x = x;
-		map->exit_pos.y = y;
-		map->has_exit = true;
+		if (data->map.has_exit == true)
+			end_program(data, TO_MUCH_EXIT, TO_MUCH_EXIT_MSG);
+		data->map.exit_pos.x = x;
+		data->map.exit_pos.y = y;
+		data->map.has_exit = true;
 	}
 	else
-		return (false);
-	return (true);
+		end_program(data, UNDEFINED_CHARACTER, UNDEFINED_CHARACTER_MSG);
 }
 
-bool	check_line_content(t_map *map, char *line, size_t y)
+void	check_line_content(t_data *data, char *line, size_t y)
 {
 	size_t	x;
 
 	x = 0;
-	while (x < map->width)
+	while (x < data->map.width)
 	{
-		if (is_this_object_ok(map, line[x], x, y) == false)
-			return (false);
+		check_objects_on_map(data, line[x], x, y);
 		x++;
 	}
-	return (true);
 }
 
-bool	are_there_only_walls(char *line)
+void	check_there_are_only_walls(t_data *data, char *line)
 {
 	size_t	i;
 
@@ -60,19 +61,21 @@ bool	are_there_only_walls(char *line)
 	while (line[i] != '\0')
 	{
 		if (line[i] != WALL)
-			return (false);
+			end_program(data, WRONG_SHAPE, WRONG_SHAPE_MSG);
 		i++;
 	}
-	return (true);
 }
 
-bool	check_content(t_map *map)
+void	check_content(t_data *data)
 {
 	size_t	i;
+	t_map	*map;
 
+	map = &data->map;
 	map->width = ft_strlen(map->array[0]);
-	if (map->width < 3 || are_there_only_walls(map->array[0]) == false)
-		return (false);
+	if (map->width < 3)
+		end_program(data, WRONG_SHAPE, WRONG_SHAPE_MSG);
+	check_there_are_only_walls(data, map->array[0]);
 	i = 1;
 	map->has_player = false;
 	map->has_exit = false;
@@ -80,16 +83,14 @@ bool	check_content(t_map *map)
 	while (map->array[i + 1] != NULL)
 	{
 		if (ft_strlen(map->array[i]) != map->width)
-			return (false);
-		if (check_line_content(map, map->array[i], i) == false)
-			return (false);
+			end_program(data, WRONG_SHAPE, WRONG_SHAPE_MSG);
+		check_line_content(data, map->array[i], i);
 		i++;
 	}
-	if (are_there_only_walls(map->array[i]) == false)
-		return (false);
+	check_there_are_only_walls(data, map->array[i]);
 	map->height = i + 1;
-	if (map->height < 3 || map->nbr_of_collectibles < 1
-		|| map->has_player == false || map->has_exit == false)
-		return (false);
-	return (true);
+	if (map->height < 3)
+		end_program(data, WRONG_SHAPE, WRONG_SHAPE_MSG);
+	if (map->nbr_of_collectibles < 1)
+		end_program(data, HAS_NO_COLLECTIBLE, HAS_NO_COLLECTIBLE_MSG);
 }

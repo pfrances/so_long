@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:46:53 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/02 19:27:29 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/03 10:50:50 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,27 @@ bool	flooded_floor_check(char **array)
 		while (array[y][x] != '\0')
 		{
 			if (array[y][x] == EXIT || array[y][x] == COLLECTIBLE)
+			{
+				free_map(array);
 				return (false);
+			}
 			x++;
 		}
 		y++;
 	}
+	free_map(array);
 	return (true);
 }
 
-bool	are_map_playble(t_map *map)
+void	are_map_playble(t_data *data)
 {
 	size_t	i;
-	bool	result;
+	t_map	*map;
 
+	map = &data->map;
 	map->flood_floor_array = malloc(sizeof(char *) * (map->height + 1));
 	if (map->flood_floor_array == NULL)
-		return (false);
+		end_program(data, FAILED_ON_MALLOC_FLOODED, FAILED_ON_MALLOC_MSG);
 	i = 0;
 	while (i < map->height)
 	{
@@ -61,13 +66,12 @@ bool	are_map_playble(t_map *map)
 			while (i--)
 				free(map->flood_floor_array[i]);
 			free(map->flood_floor_array);
-			return (false);
+			end_program(data, FAILED_ON_MALLOC_FLOODED, FAILED_ON_MALLOC_MSG);
 		}
 		i++;
 	}
 	map->flood_floor_array[i] = NULL;
 	flood_floor(map, map->player_pos.x, map->player_pos.y);
-	result = flooded_floor_check(map->flood_floor_array);
-	free_map(map->flood_floor_array);
-	return (result);
+	if (flooded_floor_check(map->flood_floor_array) == false)
+		end_program(data, MAP_NOT_PLAYABLE, MAP_NOT_PLAYABLE_MSG);
 }

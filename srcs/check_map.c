@@ -6,13 +6,13 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:45:46 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/02 19:21:34 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/03 10:54:36 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-bool	check_filename(char *str)
+void	check_filename(t_data *data, char *str)
 {
 	size_t	filename_len;
 	size_t	extension_len;
@@ -26,11 +26,10 @@ bool	check_filename(char *str)
 	filename_len = ft_strlen(filename);
 	extension_len = ft_strlen(MAP_FILE_EXTENSION);
 	if (filename_len <= extension_len)
-		return (false);
+		end_program(data, WRONG_MAP_NAME, WRONG_MAP_NAME_MSG);
 	if (ft_strncmp(MAP_FILE_EXTENSION,
 			&filename[filename_len - extension_len], extension_len) != 0)
-		return (false);
-	return (true);
+		end_program(data, WRONG_MAP_NAME, WRONG_MAP_NAME_MSG);
 }
 
 bool	check_empty_line(char *map)
@@ -50,44 +49,37 @@ bool	check_empty_line(char *map)
 	return (true);
 }
 
-bool	get_file_content(t_map *map, char *filename)
+void	get_file_content(t_data *data, char *filename)
 {
 	int		fd;
 	char	*content;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		return (false);
+		end_program(data, FAILED_AT_OPENING_MAP, FAILED_AT_OPENING_MAP_MSG);
 	content = read_all(fd);
 	if (content == NULL)
 	{
 		close(fd);
-		return (false);
+		end_program(data, FAILED_AT_READING_MAP, FAILED_AT_READING_MAP_MSG);
 	}
-	if (close(fd) == NULL)
+	close(fd);
+	if (check_empty_line(content) == false)
 	{
 		free(content);
-		return (false);
+		end_program(data, HAS_EMPTY_LINE, HAS_EMPTY_LINE_MSG);
 	}
-	if (check_empty_line(content) == false)
-		return (false);
-	map->array = ft_split(content, '\n');
+	data->map.array = ft_split(content, '\n');
 	free(content);
-	if (map->array == NULL)
-		return (false);
-	return (true);
+	if (data->map.array == NULL)
+		end_program(data, FAILED_ON_MALLOC, FAILED_ON_MALLOC_MSG);
 }
 
-bool	check_map(t_map *map, char *filename)
+void	check_map(t_data *data, char *filename)
 {
-	map->array = NULL;
-	if (check_filename(filename) == false)
-		return (false);
-	if (get_file_content(map, filename) == false)
-		return (false);
-	if (check_content(map) == false)
-		return (false);
-	if (are_map_playble(map) == false)
-		return (false);
-	return (true);
+	data->map.array = NULL;
+	check_filename(data, filename);
+	get_file_content(data, filename);
+	check_content(data);
+	are_map_playble(data);
 }

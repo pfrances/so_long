@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:00:47 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/02 18:23:33 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/03 11:16:29 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	player_moves(t_data *data, size_t x, size_t y)
 	if (map->array[y][x] == WALL)
 		return ;
 	if (map->array[y][x] == EXIT && map->nbr_of_collectibles == 0)
-		end_game(data);
+		end_program(data, NONE, NULL);
 	else if (map->array[y][x] == EMPTY || map->array[y][x] == EXIT)
 	{
 		map->array[y][x] = PLAYER;
@@ -37,13 +37,13 @@ void	player_moves(t_data *data, size_t x, size_t y)
 		map->array[map->player_pos.y][map->player_pos.x] = EXIT;
 	map->player_pos.x = x;
 	map->player_pos.y = y;
-	printf("moves count: %ld\n", ++data->move_count);
+	ft_printf("moves count: %ld\n", ++data->move_count);
 }
 
 int	deal_key(int key, t_data *data)
 {
 	if (key == XK_Escape)
-		end_game(data);
+		end_program(data, NONE, NULL);
 	if (key == XK_w)
 		player_moves(data, data->map.player_pos.x, data->map.player_pos.y - 1);
 	if (key == XK_a)
@@ -55,19 +55,51 @@ int	deal_key(int key, t_data *data)
 	return (0);
 }
 
-int	render(t_data *data)
+void	put_images(t_data *data, size_t x, size_t y)
 {
+	if (data->map.array[y][x] == WALL)
+		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+			data->wall_img.mlx_img, x * data->bsize, y * data->bsize);
+	else if (data->map.array[y][x] == EMPTY)
+		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+			data->empty_img.mlx_img, x * data->bsize, y * data->bsize);
+	else if (data->map.array[y][x] == PLAYER)
+		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+			data->player_img.mlx_img, x * data->bsize, y * data->bsize);
+	else if (data->map.array[y][x] == COLLECTIBLE)
+		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+			data->collectible_img.mlx_img, x * data->bsize, y * data->bsize);
+	else if (data->map.array[y][x] == EXIT)
+		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+			data->exit_img.mlx_img, x * data->bsize, y * data->bsize);
+}
+
+int	render_map(t_data *data)
+{
+	size_t	x;
+	size_t	y;
+
 	if (data->win_ptr == NULL)
 		return (1);
-	render_map(data);
+	y = 0;
+	while (y < data->map.height)
+	{
+		x = 0;
+		while (x < data->map.width)
+		{
+			put_images(data, x, y);
+			x++;
+		}
+		y++;
+	}
 	return (0);
 }
 
 void	put_in_loop(t_data *data)
 {
-	mlx_loop_hook(data->mlx_ptr, &render, data);
+	mlx_loop_hook(data->mlx_ptr, &render_map, data);
 	mlx_hook(data->win_ptr, ClientMessage, StructureNotifyMask,
-		&end_game, data);
+		&end_program_when_mlx_issue, data);
 	mlx_hook(data->win_ptr, KeyPress, KeyPressMask, &deal_key, data);
 	mlx_loop(data->mlx_ptr);
 }

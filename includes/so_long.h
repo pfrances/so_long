@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/02 19:44:18 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/03 11:14:32 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,18 @@
 
 # define ERROR_MSG "Error."
 # define WRONG_NB_OF_ARGS_MSG "The programm take only one argument: map path."
-# define WRONG_MAP_NAME_MSG "The map name should have a '.ber' extension."
+# define WRONG_MAP_NAME_MSG "The map name should be named like '[FILENAME].ber'"
 # define FAILED_AT_OPENING_MAP_MSG "Failed at opening the map."
 # define FAILED_AT_READING_MAP_MSG "Failed at reading the map."
 # define FAILED_AT_CLOSING_MAP_MSG "Failed at closing the map."
 # define HAS_EMPTY_LINE_MSG "The map has empty line(s)."
-# define FAILED_ON_MEMORY_ALLOCATION_MSG "Failed on memory allocation."
+# define FAILED_ON_MALLOC_MSG "Failed on memory allocation."
 # define NOT_BORDERED_BY_WALL_MSG "The map has to be bordered by walls."
-# define HAS_MORE_THAN_ONE_PLAYER_MSG "There are more than one player."
-# define HAS_MORE_THAN_ONE_EXIT_MSG "There are more than one exit."
+# define TO_MUCH_PLAYER_MSG "There are more than one player."
+# define TO_MUCH_EXIT_MSG "There are more than one exit."
 # define HAS_NO_COLLECTIBLE_MSG "There no collectible."
-# define WRONG_SHAPE_OF_MAP_MSG "The map should be a rectangle."
+# define UNDEFINED_CHARACTER_MSG "There are undefined character(s)."
+# define WRONG_SHAPE_MSG "The map should be a rectangle."
 # define MAP_NOT_PLAYABLE_MSG "The map is not playable."
 # define FAILED_AT_INIT_MLX_MSG "Failed at init MLX."
 # define FAILED_AT_INIT_WINDOW_MSG "Failed at init window."
@@ -64,13 +65,14 @@ typedef enum e_error
 	FAILED_AT_READING_MAP,
 	FAILED_AT_CLOSING_MAP,
 	HAS_EMPTY_LINE,
-	FAILED_ON_MEMORY_ALLOCATION,
+	FAILED_ON_MALLOC,
 	NOT_BORDERED_BY_WALL,
-	HAS_MORE_THAN_ONE_PLAYER,
-	HAS_MORE_THAN_ONE_EXIT,
+	TOO_MUCH_PLAYER,
+	TO_MUCH_EXIT,
 	HAS_NO_COLLECTIBLE,
-	WRONG_SHAPE_OF_MAP,
-	FAILED_ON_MEMORY_ALLOCATION_FLOODED,
+	UNDEFINED_CHARACTER,
+	WRONG_SHAPE,
+	FAILED_ON_MALLOC_FLOODED,
 	MAP_NOT_PLAYABLE,
 	FAILED_AT_INIT_MLX,
 	FAILED_AT_INIT_WINDOW,
@@ -79,7 +81,6 @@ typedef enum e_error
 	FAILED_AT_INIT_COLLECTIBLES_IMG,
 	FAILED_AT_INIT_EXIT_IMG,
 	FAILED_AT_INIT_EMPTY_IMG,
-	MLX_LOOP_ISSUE
 }	t_error;
 
 typedef struct s_position
@@ -129,32 +130,25 @@ typedef struct s_data
 	int			window_height;
 }	t_data;
 
-/*		init.c				*/
-bool	init(t_data *data, int argc, char *argv[]);
-
 /*		images_init.c		*/
-bool	images_init(t_data *data);
+void	images_init(t_data *data);
 
 /*		check_map.c			*/
-bool	check_map(t_map *map, char *filename);
+void	check_map(t_data *data, char *filename);
 
 /*		check_content.c		*/
-bool	check_content(t_map *map);
+void	check_content(t_data *data);
 
 /*		check_playability	*/
-bool	are_map_playble(t_map *map);
+void	are_map_playble(t_data *data);
 
-/*		end_game.c			*/
-int		end_game(t_data *data);
-int		destroy_window(t_data *data);
+/*		end_program.c		*/
+int		end_program_when_mlx_issue(t_data *data);
+void	end_program(t_data *data, t_error error, char *error_msg);
 void	free_map(char **map_array);
-
-/*		render_map.c		*/
-void	render_map(t_data *data);
 
 /*		loop.c				*/
 void	put_in_loop(t_data *data);
-int		deal_key(int key, t_data *data);
 
 /*		read_all.c			*/
 char	*read_all(int fd);

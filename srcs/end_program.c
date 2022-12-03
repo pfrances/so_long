@@ -1,16 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   end_game.c                                         :+:      :+:    :+:   */
+/*   end_program.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 14:57:59 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/02 19:49:48 by pfrances         ###   ########.fr       */
+/*   Created: 2022/12/03 09:47:22 by pfrances          #+#    #+#             */
+/*   Updated: 2022/12/03 11:23:57 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
+
+void	print_error_messages(char *error_msg)
+{
+	ft_putstr_fd(ERROR_MSG, STDERR_FILENO);
+	ft_putstr_fd(error_msg, STDERR_FILENO);
+}
 
 void	free_map(char **map_array)
 {
@@ -23,12 +29,6 @@ void	free_map(char **map_array)
 		i++;
 	}
 	free(map_array);
-}
-
-int	destroy_window(t_data *data)
-{
-	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-	return (0);
 }
 
 void	destroy_images(t_data *data, t_error error)
@@ -45,32 +45,32 @@ void	destroy_images(t_data *data, t_error error)
 		mlx_destroy_image(data->mlx_ptr, data->empty_img.mlx_img);
 }
 
-int	end_game(t_data *data)
+int	end_program_when_mlx_issue(t_data *data)
 {
 	free_map(data->map.array);
 	destroy_images(data, NONE);
-	destroy_window(data);
+	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 	mlx_destroy_display(data->mlx_ptr);
 	free(data->mlx_ptr);
-	exit(0);
+	print_error_messages(MLX_LOOP_ISSUE_MSG);
+	exit(EXIT_FAILURE);
 }
 
-bool	errors_gestion(t_data *data, t_error error, char *error_msg)
+void	end_program(t_data *data, t_error error, char *error_msg)
 {
 	if (error != NONE)
-		printf("%s\n%s\n", ERROR_MSG, error_msg);
-	if (error >= NOT_BORDERED_BY_WALL)
+		print_error_messages(error_msg);
+	if (error >= NOT_BORDERED_BY_WALL || error == NONE)
 		free_map(data->map.array);
-	if (error >= FAILED_AT_INIT_WALL_IMG)
+	if (error >= FAILED_AT_INIT_WALL_IMG || error == NONE)
 	{
 		destroy_images(data, error);
-		destroy_window(data);
+		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 	}
-	if (error >= FAILED_AT_INIT_WINDOW)
+	if (error >= FAILED_AT_INIT_WINDOW || error == NONE)
 	{
 		mlx_destroy_display(data->mlx_ptr);
 		free(data->mlx_ptr);
 	}
 	exit(error > NONE);
-	return (false);
 }

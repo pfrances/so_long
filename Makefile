@@ -6,7 +6,7 @@
 #    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 12:06:24 by pfrances          #+#    #+#              #
-#    Updated: 2022/12/02 18:23:44 by pfrances         ###   ########.fr        #
+#    Updated: 2022/12/03 11:14:43 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,11 +17,9 @@ OBJS_DIR = objs
 SRCS =	$(addprefix $(SRCS_DIR)/,	check_map.c			\
 									check_map_content.c	\
 									check_playability.c	\
-									end_game.c			\
+									end_program.c		\
 									images_init.c		\
-									init.c				\
 									loop.c				\
-									render_map.c		\
 									read_all.c			\
 									so_long.c)
 OBJS = $(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o))
