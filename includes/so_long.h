@@ -6,14 +6,14 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/03 11:14:32 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:24:10 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
 # include "../libraries/libft/includes/libft.h"
-# include "../libraries/ft_printf/ft_printf.h"
+# include "../libraries/ft_printf/includes/ft_printf.h"
 # include "../libraries/minilibx/mlx.h"
 # include <X11/X.h>
 # include <X11/keysym.h>

@@ -6,22 +6,27 @@
 #    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/07 22:35:44 by pfrances          #+#    #+#              #
-#    Updated: 2022/12/02 10:13:59 by pfrances         ###   ########.fr        #
+#    Updated: 2022/12/06 19:22:16 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_printf.a
 CFLAGS = -Wall -Wextra -Werror
-SRCS = ft_printf.c ft_printf_utils.c
-OBJS = $(SRCS:.c=.o)
+SRCS_DIR = srcs
+OBJS_DIR = objs
+SRCS = $(addprefix $(SRCS_DIR)/, ft_printf.c ft_printf_utils.c)
+OBJS = $(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o))
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	ar -rcs $(NAME) $(OBJS)
 
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
 clean:
-	rm -f $(OBJS) $(B_OBJS)
+	rm -f $(OBJS)
 
 fclean: clean
 	rm -f $(NAME)

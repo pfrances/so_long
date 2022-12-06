@@ -6,12 +6,11 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 17:19:48 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/06 15:22:52 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:23:20 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include <stdio.h>
+#include "../includes/ft_printf.h"
 
 static int	is_an_option(const char *ptr)
 {
