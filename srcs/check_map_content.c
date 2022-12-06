@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:46:33 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/06 16:26:49 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/06 16:44:57 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	check_there_are_only_walls(t_data *data, char *line)
 	while (line[i] != '\0')
 	{
 		if (line[i] != WALL)
-			end_program(data, WRONG_SHAPE, WRONG_SHAPE_MSG);
+			end_program(data, NOT_BORDERED_BY_WALL, NOT_BORDERED_BY_WALL_MSG);
 		i++;
 	}
 }
@@ -69,30 +69,27 @@ void	check_there_are_only_walls(t_data *data, char *line)
 void	check_content(t_data *data)
 {
 	size_t	i;
-	t_map	*map;
 
-	map = &data->map;
-	map->width = ft_strlen(map->array[0]);
-	if (map->width < 3)
+	data->map.width = ft_strlen(data->map.array[0]);
+	if (data->map.width < 3)
 		end_program(data, WRONG_SHAPE, WRONG_SHAPE_MSG);
-	check_there_are_only_walls(data, map->array[0]);
-	i = 1;
-	map->has_player = false;
-	map->has_exit = false;
-	map->nbr_of_collectibles = 0;
-	while (map->array[i] != NULL)
+	i = 0;
+	data->map.has_player = false;
+	data->map.has_exit = false;
+	data->map.nbr_of_collectibles = 0;
+	while (data->map.array[i] != NULL)
 	{
-		if (ft_strlen(map->array[i]) != map->width)
+		if (i != 0 && ft_strlen(data->map.array[i]) != data->map.width)
 			end_program(data, WRONG_SHAPE, WRONG_SHAPE_MSG);
-		if (map->array[i + 1] == NULL)
-			check_there_are_only_walls(data, map->array[i]);
+		if (i == 0 || data->map.array[i + 1] == NULL)
+			check_there_are_only_walls(data, data->map.array[i]);
 		else
-			check_line_content(data, map->array[i], i);
+			check_line_content(data, data->map.array[i], i);
 		i++;
 	}
-	map->height = i;
-	if (map->height < 3)
+	data->map.height = i;
+	if (data->map.height < 3)
 		end_program(data, WRONG_SHAPE, WRONG_SHAPE_MSG);
-	if (map->nbr_of_collectibles < 1)
+	if (data->map.nbr_of_collectibles < 1)
 		end_program(data, HAS_NO_COLLECTIBLE, HAS_NO_COLLECTIBLE_MSG);
 }

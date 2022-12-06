@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:45:46 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/06 16:20:54 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/06 16:31:13 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,8 @@ char	*skip_head_tail_empty_lines(char *content)
 		to_keep_count--;
 	}
 	result = malloc(sizeof(char) * (to_keep_count + 1));
-	if (result == NULL)
-	{
-		free(content);
-		return (NULL);
-	}
-	ft_strlcpy(result, content + head, to_keep_count + 1);
+	if (result != NULL)
+		ft_strlcpy(result, content + head, to_keep_count + 1);
 	free(content);
 	return (result);
 }
