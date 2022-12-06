@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:46:33 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/03 10:57:17 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/06 16:26:49 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,17 @@ void	check_content(t_data *data)
 	map->has_player = false;
 	map->has_exit = false;
 	map->nbr_of_collectibles = 0;
-	while (map->array[i + 1] != NULL)
+	while (map->array[i] != NULL)
 	{
 		if (ft_strlen(map->array[i]) != map->width)
 			end_program(data, WRONG_SHAPE, WRONG_SHAPE_MSG);
-		check_line_content(data, map->array[i], i);
+		if (map->array[i + 1] == NULL)
+			check_there_are_only_walls(data, map->array[i]);
+		else
+			check_line_content(data, map->array[i], i);
 		i++;
 	}
-	check_there_are_only_walls(data, map->array[i]);
-	map->height = i + 1;
+	map->height = i;
 	if (map->height < 3)
 		end_program(data, WRONG_SHAPE, WRONG_SHAPE_MSG);
 	if (map->nbr_of_collectibles < 1)
