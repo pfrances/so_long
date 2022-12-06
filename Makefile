@@ -6,7 +6,7 @@
 #    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 12:06:24 by pfrances          #+#    #+#              #
-#    Updated: 2022/12/03 11:14:43 by pfrances         ###   ########.fr        #
+#    Updated: 2022/12/06 13:51:20 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 FT_PRINTF_DIR = $(LIBS_DIR)/ft_printf
 FT_PRINTF = $(FT_PRINTF_DIR)/ft_printf.a
 MLX_DIR = $(LIBS_DIR)/minilibx
+MLX_REPO = https://github.com/42Paris/minilibx-linux.git
 INCLUDES = -I includes
 DEFINE_VARS = -D $(ESC) -D $(W) -D $(A) -D $(S) -D $(D) -D $(FRAMERATE) -D $(ADJUST)
 
@@ -76,8 +77,11 @@ $(LIBFT):
 $(FT_PRINTF):
 	make -C $(FT_PRINTF_DIR)
 
-$(MLX):
+$(MLX): $(MLX_DIR)/Makefile
 	make -C $(MLX_DIR)
+
+$(MLX_DIR)/Makefile:
+	git clone $(MLX_REPO) $(MLX_DIR)
 
 clean:
 	rm -f $(OBJS)
