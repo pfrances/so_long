@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:45:46 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/03 10:54:36 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/06 15:51:18 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,23 @@ void	check_filename(t_data *data, char *str)
 		end_program(data, WRONG_MAP_NAME, WRONG_MAP_NAME_MSG);
 }
 
+char	*skip_head_tail_empty_lines(char *map)
+{
+	while (*map == '\n')
+		map++;
+	while ((*map != '\0' || *(map + 1) != '\0')
+		&& (*map != '\n' || *(map + 1) != '\n'))
+		map++;
+	while (*map == '\n')
+		map++;
+	return (map);
+}
+
 bool	check_empty_line(char *map)
 {
 	size_t	i;
 
+	map = skip_head_tail_empty_lines(map);
 	i = 0;
 	while (map[i] != '\0')
 	{

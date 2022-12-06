@@ -1,5 +1,6 @@
 *.o
 *libft.a
 *get_next_line.a
-*libftprintf.a
+ft_printf.a
 so_long
+/libraries/*minilibx*
