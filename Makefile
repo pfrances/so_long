@@ -6,12 +6,12 @@
 #    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 12:06:24 by pfrances          #+#    #+#              #
-#    Updated: 2022/12/06 13:51:20 by pfrances         ###   ########.fr        #
+#    Updated: 2022/12/06 14:41:08 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = so_long
-CC = cc
+CC = gcc
 SRCS_DIR = srcs
 OBJS_DIR = objs
 SRCS =	$(addprefix $(SRCS_DIR)/,	check_map.c			\

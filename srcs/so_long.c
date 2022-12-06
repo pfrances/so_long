@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:24:13 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/03 11:14:17 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/06 14:57:36 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	main(int argc, char *argv[])
 	if (argc != 2)
 		end_program(&data, WRONG_NB_OF_ARGS, WRONG_NB_OF_ARGS_MSG);
 	check_map(&data, argv[1]);
+	set_data_value(&data);
 	init_window(&data);
 	images_init(&data);
 	put_in_loop(&data);

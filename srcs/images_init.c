@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 10:02:05 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/03 11:08:36 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/06 14:56:44 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ bool	set_xpm_img(void *mlx_ptr, t_img *img, char *path)
 {
 	img->mlx_img = mlx_xpm_file_to_image(mlx_ptr, path,
 			&img->width, &img->height);
+	img->addr = mlx_get_data_addr(img->mlx_img, &img->bpp,
+			&img->line_len, &img->endian);
 	return (img->mlx_img != NULL);
 }
 
