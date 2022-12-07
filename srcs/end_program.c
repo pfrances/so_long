@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 09:47:22 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/03 11:43:03 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/07 11:18:16 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,10 @@ void	destroy_images(t_data *data, t_error error)
 		mlx_destroy_image(data->mlx_ptr, data->empty_img.mlx_img);
 }
 
-int	end_program_when_mlx_issue(t_data *data)
+int	cross_button_event(t_data *data)
 {
-	free_map(data->map.array);
-	destroy_images(data, NONE);
-	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-	mlx_destroy_display(data->mlx_ptr);
-	free(data->mlx_ptr);
-	print_error_messages(MLX_LOOP_ISSUE_MSG);
-	exit(EXIT_FAILURE);
+	end_program(data, NONE, NULL);
+	return (0);
 }
 
 void	end_program(t_data *data, t_error error, char *error_msg)

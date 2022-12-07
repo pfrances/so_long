@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:45:46 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/06 16:31:13 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:00:02 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ char	*skip_head_tail_empty_lines(char *content)
 	size_t	tail;
 	size_t	to_keep_count;
 
-	if (content == NULL)
-		return (NULL);
 	to_keep_count = ft_strlen(content);
 	head = 0;
 	while (content[head] == '\n')
@@ -48,15 +46,15 @@ char	*skip_head_tail_empty_lines(char *content)
 		head++;
 		to_keep_count--;
 	}
-	tail = ft_strlen(content) - 1;
-	while (tail > 0 && content[tail] == '\n')
+	if (content[head] == '\0')
 	{
-		tail--;
-		to_keep_count--;
+		free(content);
+		return (NULL);
 	}
-	result = malloc(sizeof(char) * (to_keep_count + 1));
-	if (result != NULL)
-		ft_strlcpy(result, content + head, to_keep_count + 1);
+	tail = ft_strlen(content);
+	while (tail > 0 && content[--tail] == '\n')
+		to_keep_count--;
+	result = ft_strndup(&content[head], to_keep_count);
 	free(content);
 	return (result);
 }
@@ -87,13 +85,12 @@ void	get_file_content(t_data *data, char *filename)
 	if (fd < 0)
 		end_program(data, FAILED_AT_OPENING_MAP, FAILED_AT_OPENING_MAP_MSG);
 	content = read_all(fd);
+	close(fd);
+	if (content == NULL)
+		end_program(data, FAILED_AT_READING_MAP, FAILED_AT_READING_MAP_MSG);
 	content = skip_head_tail_empty_lines(content);
 	if (content == NULL)
-	{
-		close(fd);
-		end_program(data, FAILED_AT_READING_MAP, FAILED_AT_READING_MAP_MSG);
-	}
-	close(fd);
+		end_program(data, EMPTY_MAP, EMPTY_MAP_MSG);
 	if (check_empty_line(content) == false)
 	{
 		free(content);

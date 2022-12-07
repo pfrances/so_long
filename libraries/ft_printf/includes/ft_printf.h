@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 17:17:49 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/02 10:17:16 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/07 11:44:14 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define FT_PRINTF_H
 # include <stddef.h>
 # include <unistd.h>
-# include <stdio.h>
 # include <stdarg.h>
 # define OPTION "cspdiuxX%%"
 # define DECIMAL_BASE "0123456789"

@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:00:47 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/03 11:16:29 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:47:39 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	player_moves(t_data *data, size_t x, size_t y)
 	map = &data->map;
 	if (map->array[y][x] == WALL)
 		return ;
+	ft_printf("moves count: %ld\n", ++data->move_count);
 	if (map->array[y][x] == EXIT && map->nbr_of_collectibles == 0)
 		end_program(data, NONE, NULL);
 	else if (map->array[y][x] == EMPTY || map->array[y][x] == EXIT)
@@ -37,7 +38,6 @@ void	player_moves(t_data *data, size_t x, size_t y)
 		map->array[map->player_pos.y][map->player_pos.x] = EXIT;
 	map->player_pos.x = x;
 	map->player_pos.y = y;
-	ft_printf("moves count: %ld\n", ++data->move_count);
 }
 
 int	deal_key(int key, t_data *data)
@@ -59,19 +59,19 @@ void	put_images(t_data *data, size_t x, size_t y)
 {
 	if (data->map.array[y][x] == WALL)
 		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-			data->wall_img.mlx_img, x * data->bsize, y * data->bsize);
+			data->wall_img.mlx_img, x * BSIZE, y * BSIZE);
 	else if (data->map.array[y][x] == EMPTY)
 		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-			data->empty_img.mlx_img, x * data->bsize, y * data->bsize);
+			data->empty_img.mlx_img, x * BSIZE, y * BSIZE);
 	else if (data->map.array[y][x] == PLAYER)
 		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-			data->player_img.mlx_img, x * data->bsize, y * data->bsize);
+			data->player_img.mlx_img, x * BSIZE, y * BSIZE);
 	else if (data->map.array[y][x] == COLLECTIBLE)
 		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-			data->collectible_img.mlx_img, x * data->bsize, y * data->bsize);
+			data->collectible_img.mlx_img, x * BSIZE, y * BSIZE);
 	else if (data->map.array[y][x] == EXIT)
 		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-			data->exit_img.mlx_img, x * data->bsize, y * data->bsize);
+			data->exit_img.mlx_img, x * BSIZE, y * BSIZE);
 }
 
 int	render_map(t_data *data)
@@ -99,7 +99,7 @@ void	put_in_loop(t_data *data)
 {
 	mlx_loop_hook(data->mlx_ptr, &render_map, data);
 	mlx_hook(data->win_ptr, ClientMessage, StructureNotifyMask,
-		&end_program_when_mlx_issue, data);
+		&cross_button_event, data);
 	mlx_hook(data->win_ptr, KeyPress, KeyPressMask, &deal_key, data);
 	mlx_loop(data->mlx_ptr);
 }

@@ -6,7 +6,7 @@
 #    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 08:33:13 by pfrances          #+#    #+#              #
-#    Updated: 2022/11/28 11:25:57 by pfrances         ###   ########.fr        #
+#    Updated: 2022/12/07 13:29:43 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRCS =	$(addprefix $(SRCS_DIR)/,	ft_isalpha.c		\
 									ft_atoi.c			\
 									ft_calloc.c			\
 									ft_strdup.c			\
+									ft_strndup.c		\
 									ft_substr.c			\
 									ft_strjoin.c		\
 									ft_strtrim.c		\
@@ -71,13 +72,14 @@ $(NAME): $(OBJS)
 	ar -rcs $(NAME) $(OBJS)
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
+	@mkdir -p $(OBJS_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 bonus:
 	make all WITH_BONUS=TRUE
 
 clean:
-	rm -f $(OBJS) $(B_OBJS)
+	rm -rf $(OBJS_DIR)
 
 fclean: clean
 	rm -f $(NAME)

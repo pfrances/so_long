@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/06 19:24:10 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:15:32 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,18 @@
 # include <unistd.h>
 # include <stdlib.h>
 # define BUFFER_SIZE 1024
+# define BSIZE 100
+# define HEIGHT_MIN 3
+# define WITDH_MIN 3
+
+# ifndef SCREEN_HEIGHT
+#  define SCREEN_HEIGHT 1080
+# endif
+
+# ifndef SCREEN_WIDTH
+#  define SCREEN_WIDTH 1920
+# endif
+
 # define MAP_FILE_EXTENSION ".ber"
 # define WALL_XPM_PATH "./xpm_files/wall.xpm"
 # define EMPTY_XPM_PATH "./xpm_files/empty.xpm"
@@ -36,20 +48,25 @@
 # define COLLECTIBLE 'C'
 # define EXIT 'E'
 
-# define ERROR_MSG "Error."
+# define ERROR_MSG "Error"
 # define WRONG_NB_OF_ARGS_MSG "The programm take only one argument: map path."
 # define WRONG_MAP_NAME_MSG "The map name should be named like '[FILENAME].ber'"
 # define FAILED_AT_OPENING_MAP_MSG "Failed at opening the map."
 # define FAILED_AT_READING_MAP_MSG "Failed at reading the map."
+# define EMPTY_MAP_MSG "The map is empty."
 # define FAILED_AT_CLOSING_MAP_MSG "Failed at closing the map."
 # define HAS_EMPTY_LINE_MSG "The map has empty line(s)."
 # define FAILED_ON_MALLOC_MSG "Failed on memory allocation."
 # define NOT_BORDERED_BY_WALL_MSG "The map has to be bordered by walls."
 # define TO_MUCH_PLAYER_MSG "There are more than one player."
 # define TO_MUCH_EXIT_MSG "There are more than one exit."
-# define HAS_NO_COLLECTIBLE_MSG "There no collectible."
 # define UNDEFINED_CHARACTER_MSG "There are undefined character(s)."
 # define WRONG_SHAPE_MSG "The map should be a rectangle."
+# define MAP_TOO_HIGH_MSG "The map is too high."
+# define MAP_TOO_WIDE_MSG "The map is too wide."
+# define HAS_NO_PLAYER_MSG "There no player."
+# define HAS_NO_EXIT_MSG "There no exit."
+# define HAS_NO_COLLECTIBLE_MSG "There no collectible."
 # define MAP_NOT_PLAYABLE_MSG "The map is not playable."
 # define FAILED_AT_INIT_MLX_MSG "Failed at init MLX."
 # define FAILED_AT_INIT_WINDOW_MSG "Failed at init window."
@@ -63,15 +80,20 @@ typedef enum e_error
 	WRONG_MAP_NAME,
 	FAILED_AT_OPENING_MAP,
 	FAILED_AT_READING_MAP,
+	EMPTY_MAP,
 	FAILED_AT_CLOSING_MAP,
 	HAS_EMPTY_LINE,
 	FAILED_ON_MALLOC,
 	NOT_BORDERED_BY_WALL,
 	TOO_MUCH_PLAYER,
 	TO_MUCH_EXIT,
-	HAS_NO_COLLECTIBLE,
-	UNDEFINED_CHARACTER,
 	WRONG_SHAPE,
+	UNDEFINED_CHARACTER,
+	MAP_TOO_HIGH,
+	MAP_TOO_WIDE,
+	HAS_NO_PLAYER,
+	HAS_NO_EXIT,
+	HAS_NO_COLLECTIBLE,
 	FAILED_ON_MALLOC_FLOODED,
 	MAP_NOT_PLAYABLE,
 	FAILED_AT_INIT_MLX,
@@ -124,8 +146,9 @@ typedef struct s_data
 	t_img		exit_img;
 	int			cur_img;
 	t_map		map;
-	int			bsize;
 	size_t		move_count;
+	size_t			screen_witdh;
+	size_t			screen_height;
 	int			window_width;
 	int			window_height;
 }	t_data;
@@ -143,7 +166,7 @@ void	check_content(t_data *data);
 void	are_map_playble(t_data *data);
 
 /*		end_program.c		*/
-int		end_program_when_mlx_issue(t_data *data);
+int		cross_button_event(t_data *data);
 void	end_program(t_data *data, t_error error, char *error_msg);
 void	free_map(char **map_array);
 

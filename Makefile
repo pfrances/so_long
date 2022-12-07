@@ -6,7 +6,7 @@
 #    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 12:06:24 by pfrances          #+#    #+#              #
-#    Updated: 2022/12/06 19:17:08 by pfrances         ###   ########.fr        #
+#    Updated: 2022/12/07 13:26:52 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,9 @@ FT_PRINTF = $(FT_PRINTF_DIR)/ft_printf.a
 MLX_DIR = $(LIBS_DIR)/minilibx
 MLX_REPO = https://github.com/42Paris/minilibx-linux.git
 INCLUDES = -I includes
-DEFINE_VARS = -D $(ESC) -D $(W) -D $(A) -D $(S) -D $(D) -D $(FRAMERATE) -D $(ADJUST)
+SCREEN_WITDH = SCREEN_WITDH=$(shell xrandr | grep '*' | cut -d '*' -f1 | cut -d ' ' -f4 | sort | cut -d 'x' -f1)
+SCREEN_HEIGHT = SCREEN_HEIGHT=$(shell xrandr | grep '*' | cut -d '*' -f1 | cut -d ' ' -f4 | sort | cut -d 'x' -f2)
+DEFINE_VARS = -D $(ESC) -D $(W) -D $(A) -D $(S) -D $(D) -D $(FRAMERATE) -D $(ADJUST) -D $(SCREEN_WITDH) -D $(SCREEN_HEIGHT)
 
 #--------------------------------------------------------------------------#
 
@@ -69,6 +71,7 @@ $(NAME): $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX)
 	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX_LIBS) -o $(NAME)
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(MLX)
+	@mkdir -p $(OBJS_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) $(DEFINE_VARS) -c $< -o $@
 
 $(LIBFT):
@@ -84,15 +87,16 @@ $(MLX_DIR)/Makefile:
 	git clone $(MLX_REPO) $(MLX_DIR)
 
 clean:
-	rm -f $(OBJS)
+	rm -rf $(OBJS_DIR)
 	make -C $(LIBFT_DIR) clean
 	make -C $(FT_PRINTF_DIR) clean
-	make -C $(MLX_DIR) clean
+	if [ -d "$(MLX_DIR)" ]; then make -C $(MLX_DIR) clean; fi
 
 fclean: clean
 	rm -f $(NAME)
 	rm -f $(LIBFT)
 	rm -f $(FT_PRINTF)
+	rm -rf $(MLX_DIR)
 
 re: fclean all
 

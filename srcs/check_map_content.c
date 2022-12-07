@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:46:33 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/06 16:44:57 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:15:03 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,36 @@ void	check_there_are_only_walls(t_data *data, char *line)
 	}
 }
 
+void	content_final_check(t_data *data)
+{
+	if (data->map.height < HEIGHT_MIN)
+		end_program(data, WRONG_SHAPE, WRONG_SHAPE_MSG);
+	data->window_height = data->map.height * BSIZE;
+	if (data->window_height > SCREEN_HEIGHT)
+		end_program(data, MAP_TOO_HIGH, MAP_TOO_HIGH_MSG);
+	data->window_width = data->map.width * BSIZE;
+	if (data->window_width > SCREEN_WIDTH)
+		end_program(data, MAP_TOO_WIDE, MAP_TOO_WIDE_MSG);
+	if (data->map.has_player == false)
+		end_program(data, HAS_NO_PLAYER, HAS_NO_PLAYER_MSG);
+	if (data->map.has_exit == false)
+		end_program(data, HAS_NO_EXIT, HAS_NO_EXIT_MSG);
+	if (data->map.nbr_of_collectibles < 1)
+		end_program(data, HAS_NO_COLLECTIBLE, HAS_NO_COLLECTIBLE_MSG);
+}
+
 void	check_content(t_data *data)
 {
 	size_t	i;
 
 	data->map.width = ft_strlen(data->map.array[0]);
-	if (data->map.width < 3)
+	if (data->map.width < WITDH_MIN)
 		end_program(data, WRONG_SHAPE, WRONG_SHAPE_MSG);
 	i = 0;
 	data->map.has_player = false;
 	data->map.has_exit = false;
 	data->map.nbr_of_collectibles = 0;
+	data->move_count = 0;
 	while (data->map.array[i] != NULL)
 	{
 		if (i != 0 && ft_strlen(data->map.array[i]) != data->map.width)
@@ -88,8 +107,5 @@ void	check_content(t_data *data)
 		i++;
 	}
 	data->map.height = i;
-	if (data->map.height < 3)
-		end_program(data, WRONG_SHAPE, WRONG_SHAPE_MSG);
-	if (data->map.nbr_of_collectibles < 1)
-		end_program(data, HAS_NO_COLLECTIBLE, HAS_NO_COLLECTIBLE_MSG);
+	content_final_check(data);
 }
