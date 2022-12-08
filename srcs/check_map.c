@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:45:46 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/07 13:00:02 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/08 13:29:50 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,4 +109,7 @@ void	check_map(t_data *data, char *filename)
 	get_file_content(data, filename);
 	check_content(data);
 	are_map_playble(data);
+	data->map.initial_map = array_duplicate(data->map.array);
+	if (data->map.initial_map == NULL)
+		end_program(data, FAILED_ON_MALLOC_INITIAL_MAP, FAILED_ON_MALLOC_MSG);
 }

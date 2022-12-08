@@ -6,7 +6,7 @@
 #    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 12:06:24 by pfrances          #+#    #+#              #
-#    Updated: 2022/12/07 13:26:52 by pfrances         ###   ########.fr        #
+#    Updated: 2022/12/08 13:28:29 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,14 +14,16 @@ NAME = so_long
 CC = cc
 SRCS_DIR = srcs
 OBJS_DIR = objs
-SRCS =	$(addprefix $(SRCS_DIR)/,	check_map.c			\
-									check_map_content.c	\
-									check_playability.c	\
-									end_program.c		\
-									images_init.c		\
-									loop.c				\
-									read_all.c			\
-									so_long.c)
+SRCS =	$(addprefix $(SRCS_DIR)/,		array_duplicate.c					\
+										check_map.c							\
+										check_map_content.c					\
+										check_playability.c					\
+										deal_keys.c							\
+										end_program.c						\
+										images_init.c						\
+										loop.c								\
+										read_all.c							\
+										so_long.c)
 OBJS = $(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o))
 CFLAGS = -Wall -Wextra -Werror
 LIBS_DIR = ./libraries
@@ -60,7 +62,7 @@ FRAMERATE = FRAMERATE=200
 ADJUST = ADJUST=20
 MLX = $(MLX_DIR)/libmlx_Darwin.a
 INCLUDES += -I/usr/X11/include
-MLX_LIBS = -L$(MLX_DIR) -L/usr/X11/include/../lib -lmlx_Darwin -lXext -lX11 -framework OpenGL -framework AppKit
+MLX_LIBS = -L $(MLX_DIR) -L /usr/X11/include/../lib -lmlx_Darwin -lXext -lX11 -framework OpenGL -framework AppKit
 endif
 
 #--------------------------------------------------------------------------#

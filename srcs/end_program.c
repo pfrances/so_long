@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 09:47:22 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/07 11:18:16 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/08 11:45:59 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	destroy_images(t_data *data, t_error error)
 		mlx_destroy_image(data->mlx_ptr, data->wall_img.mlx_img);
 	if (error >= FAILED_AT_INIT_PLAYER_IMG || error == NONE)
 		mlx_destroy_image(data->mlx_ptr, data->player_img.mlx_img);
+	if (error >= FAILED_AT_INIT_PLAYER_ON_INIT_IMG || error == NONE)
+		mlx_destroy_image(data->mlx_ptr, data->player_on_exit_img.mlx_img);
 	if (error >= FAILED_AT_INIT_COLLECTIBLES_IMG || error == NONE)
 		mlx_destroy_image(data->mlx_ptr, data->collectible_img.mlx_img);
 	if (error >= FAILED_AT_INIT_EXIT_IMG || error == NONE)
@@ -55,7 +57,8 @@ void	end_program(t_data *data, t_error error, char *error_msg)
 {
 	if (error != NONE)
 		print_error_messages(error_msg);
-	if (error >= NOT_BORDERED_BY_WALL || error == NONE)
+	if ((error >= NOT_BORDERED_BY_WALL && error != FAILED_ON_MALLOC_RESET_MAP)
+		|| error == NONE)
 		free_map(data->map.array);
 	if (error >= FAILED_AT_INIT_WALL_IMG || error == NONE)
 	{
@@ -67,5 +70,7 @@ void	end_program(t_data *data, t_error error, char *error_msg)
 		mlx_destroy_display(data->mlx_ptr);
 		free(data->mlx_ptr);
 	}
+	if (error >= FAILED_ON_MALLOC_RESET_MAP || error == NONE)
+		free_map(data->map.initial_map);
 	exit(error > NONE);
 }

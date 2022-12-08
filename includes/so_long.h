@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/07 13:15:32 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/08 11:50:27 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # define WALL_XPM_PATH "./xpm_files/wall.xpm"
 # define EMPTY_XPM_PATH "./xpm_files/empty.xpm"
 # define PLAYER_XPM_PATH "./xpm_files/player.xpm"
+# define PLAYER_ON_EXIT_XPM_PATH "./xpm_files/player_on_exit.xpm"
 # define COLLECTIBLE_XPM_PATH "./xpm_files/collectible.xpm"
 # define EXIT_XPM_PATH "./xpm_files/exit.xpm"
 # define EMPTY '0'
@@ -47,6 +48,7 @@
 # define PLAYER 'P'
 # define COLLECTIBLE 'C'
 # define EXIT 'E'
+# define RESET XK_r
 
 # define ERROR_MSG "Error"
 # define WRONG_NB_OF_ARGS_MSG "The programm take only one argument: map path."
@@ -100,9 +102,12 @@ typedef enum e_error
 	FAILED_AT_INIT_WINDOW,
 	FAILED_AT_INIT_WALL_IMG,
 	FAILED_AT_INIT_PLAYER_IMG,
+	FAILED_AT_INIT_PLAYER_ON_INIT_IMG,
 	FAILED_AT_INIT_COLLECTIBLES_IMG,
 	FAILED_AT_INIT_EXIT_IMG,
 	FAILED_AT_INIT_EMPTY_IMG,
+	FAILED_ON_MALLOC_INITIAL_MAP,
+	FAILED_ON_MALLOC_RESET_MAP,
 }	t_error;
 
 typedef struct s_position
@@ -124,6 +129,7 @@ typedef struct s_img
 
 typedef struct s_map
 {
+	char		**initial_map;
 	char		**array;
 	char		**flood_floor_array;
 	size_t		height;
@@ -131,6 +137,8 @@ typedef struct s_map
 	size_t		nbr_of_collectibles;
 	bool		has_player;
 	bool		has_exit;
+	t_position	player_initial_pos;
+	size_t		initial_nbr_of_collectibles;
 	t_position	player_pos;
 	t_position	exit_pos;
 }	t_map;
@@ -142,6 +150,7 @@ typedef struct s_data
 	t_img		wall_img;
 	t_img		empty_img;
 	t_img		player_img;
+	t_img		player_on_exit_img;
 	t_img		collectible_img;
 	t_img		exit_img;
 	int			cur_img;
@@ -172,6 +181,13 @@ void	free_map(char **map_array);
 
 /*		loop.c				*/
 void	put_in_loop(t_data *data);
+
+/*		deal_keys.c			*/
+int		deal_keys(int key, t_data *data);
+
+/****************	./tools/	****************/
+/*		map_duplicate.c		*/
+char	**array_duplicate(char **to_dup);
 
 /*		read_all.c			*/
 char	*read_all(int fd);

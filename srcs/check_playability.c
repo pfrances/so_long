@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:46:53 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/06 15:38:24 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/08 11:44:32 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,27 +50,12 @@ bool	flooded_floor_check(char **array)
 
 void	are_map_playble(t_data *data)
 {
-	size_t	i;
 	t_map	*map;
 
 	map = &data->map;
-	map->flood_floor_array = malloc(sizeof(char *) * (map->height + 1));
+	map->flood_floor_array = array_duplicate(map->array);
 	if (map->flood_floor_array == NULL)
 		end_program(data, FAILED_ON_MALLOC_FLOODED, FAILED_ON_MALLOC_MSG);
-	i = 0;
-	while (i < map->height)
-	{
-		map->flood_floor_array[i] = ft_strdup(map->array[i]);
-		if (map->flood_floor_array == NULL)
-		{
-			while (i--)
-				free(map->flood_floor_array[i]);
-			free(map->flood_floor_array);
-			end_program(data, FAILED_ON_MALLOC_FLOODED, FAILED_ON_MALLOC_MSG);
-		}
-		i++;
-	}
-	map->flood_floor_array[i] = NULL;
 	flood_floor(map, map->player_pos.x, map->player_pos.y);
 	if (flooded_floor_check(map->flood_floor_array) == false)
 		end_program(data, MAP_NOT_PLAYABLE, MAP_NOT_PLAYABLE_MSG);
