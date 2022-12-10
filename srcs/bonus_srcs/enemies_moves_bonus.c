@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:30:40 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 11:01:15 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/10 17:18:25 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,16 @@ void	enemies_moves(t_data *data, t_enemy *enemy, size_t x, size_t y)
 bool	can_move(t_data *data, t_enemy *enemy)
 {
 	if (data->map.array[enemy->pos.y][enemy->pos.x + 1] != WALL
-		|| data->map.array[enemy->pos.y][enemy->pos.x + 1] != ENEMY)
+		&& data->map.array[enemy->pos.y][enemy->pos.x + 1] != ENEMY)
 		return (true);
 	if (data->map.array[enemy->pos.y][enemy->pos.x - 1] != WALL
-		|| data->map.array[enemy->pos.y][enemy->pos.x - 1] != ENEMY)
+		&& data->map.array[enemy->pos.y][enemy->pos.x - 1] != ENEMY)
 		return (true);
 	if (data->map.array[enemy->pos.y + 1][enemy->pos.x] != WALL
-		|| data->map.array[enemy->pos.y + 1][enemy->pos.x] != ENEMY)
+		&& data->map.array[enemy->pos.y + 1][enemy->pos.x] != ENEMY)
 		return (true);
 	if (data->map.array[enemy->pos.y - 1][enemy->pos.x] != WALL
-		|| data->map.array[enemy->pos.y - 1][enemy->pos.x] != ENEMY)
+		&& data->map.array[enemy->pos.y - 1][enemy->pos.x] != ENEMY)
 		return (true);
 	return (false);
 }

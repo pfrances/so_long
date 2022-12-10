@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 16:33:39 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 10:48:53 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/10 17:15:24 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,7 @@ int	deal_enemies(t_data *data)
 	enemies = data->map.enemies;
 	while (i < data->map.nb_enemies)
 	{
-		if (can_move(data, &enemies[i]) == false)
-			;
-		else
+		if (can_move(data, &enemies[i]))
 		{
 			x_y_by_direction(enemies[i].pos, enemies[i].direction, &x, &y);
 			enemies_moves(data, &enemies[i], x, y);

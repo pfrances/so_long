@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 16:41:28 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/10 16:54:45 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@
 
 # define ERROR_MSG "Error"
 # define WRONG_NB_OF_ARGS_MSG "The programm take only one argument: map path."
-# define WRONG_MAP_NAME_MSG "The map name should be named like '[FILENAME].ber'"
+# define WRONG_MAP_NAME_MSG "The map should be named like '[FILENAME].ber'."
 # define FAILED_AT_OPENING_MAP_MSG "Failed at opening the map."
 # define FAILED_AT_READING_MAP_MSG "Failed at reading the map."
 # define EMPTY_MAP_MSG "The map is empty."
