@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:46:33 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/08 11:38:44 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/08 15:55:19 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,7 @@ void	check_objects_on_map(t_data *data, char c, size_t x, size_t y)
 	{
 		if (data->map.has_player == true)
 			end_program(data, TOO_MUCH_PLAYER, TO_MUCH_PLAYER_MSG);
-		data->map.player_pos.x = x;
-		data->map.player_pos.y = y;
-		data->map.player_initial_pos = data->map.player_pos;
+		set_position(&data->map.player_pos, x, y);
 		data->map.has_player = true;
 	}
 	else if (c == COLLECTIBLE)
@@ -34,8 +32,7 @@ void	check_objects_on_map(t_data *data, char c, size_t x, size_t y)
 	{
 		if (data->map.has_exit == true)
 			end_program(data, TO_MUCH_EXIT, TO_MUCH_EXIT_MSG);
-		data->map.exit_pos.x = x;
-		data->map.exit_pos.y = y;
+		set_position(&data->map.exit_pos, x, y);
 		data->map.has_exit = true;
 	}
 	else
@@ -108,6 +105,5 @@ void	check_content(t_data *data)
 		i++;
 	}
 	data->map.height = i;
-	data->map.initial_nbr_of_collectibles = data->map.nbr_of_collectibles;
 	content_final_check(data);
 }

@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.h                                          :+:      :+:    :+:   */
+/*   so_long_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 10:34:18 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/10 16:41:28 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_LONG_H
-# define SO_LONG_H
+#ifndef SO_LONG_BONUS_H
+# define SO_LONG_BONUS_H
 # include "../libraries/libft/includes/libft.h"
 # include "../libraries/ft_printf/includes/ft_printf.h"
 # include "../libraries/minilibx/mlx.h"
@@ -19,14 +19,29 @@
 # include <X11/keysym.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <sys/time.h>
 # include <fcntl.h>
 # include <stdbool.h>
+# include <unistd.h>
 # include <stdlib.h>
+# include <time.h>
 
 # define BUFFER_SIZE 1024
 # define BSIZE 100
 # define HEIGHT_MIN 3
 # define WITDH_MIN 3
+# define SPACE_FOR_MSG 20
+# define DOUBLE_R_TIMING 250000
+# define DEFAULT_SPAWN_TIMING 1000000
+# define ENEMIES_SPEED_MIN 5000000
+# define ENEMIES_SPEED_MAX 200000
+# define ENEMIES_SPEED_STEP 200000
+# define ENEMIES_SPEED_MSG "ENEMIES SPEED: "
+# define STEPS_COUNT_MSG "STEP(S): "
+# define SIZE_MAX_DIGITS 20
+# define WHITE 0x00FFFFFF
+# define BLACK 0x00000000
+# define RED 0x00FF0000
 
 # ifndef SCREEN_HEIGHT
 #  define SCREEN_HEIGHT 1080
@@ -43,11 +58,15 @@
 # define PLAYER_ON_EXIT_XPM_PATH "./xpm_files/player_on_exit.xpm"
 # define COLLECTIBLE_XPM_PATH "./xpm_files/collectible.xpm"
 # define EXIT_XPM_PATH "./xpm_files/exit.xpm"
+# define ENEMY_XPM_PATH "./xpm_files/enemy.xpm"
+# define ENEMY_ON_EXIT_XPM_PATH "./xpm_files/enemy_on_exit.xpm"
+# define BOTTOM_XPM_PATH "./xpm_files/bottom.xpm"
 # define EMPTY '0'
 # define WALL '1'
 # define PLAYER 'P'
 # define COLLECTIBLE 'C'
 # define EXIT 'E'
+# define ENEMY 'W'
 
 # define ERROR_MSG "Error"
 # define WRONG_NB_OF_ARGS_MSG "The programm take only one argument: map path."
@@ -97,6 +116,8 @@ typedef enum e_error
 	HAS_NO_COLLECTIBLE,
 	FAILED_ON_MALLOC_FLOODED,
 	MAP_NOT_PLAYABLE,
+	FAILED_ON_MALLOC_INITIAL_MAP,
+	FAILED_ON_MALLOC_ENEMIES,
 	FAILED_AT_INIT_MLX,
 	FAILED_AT_INIT_WINDOW,
 	FAILED_AT_INIT_WALL_IMG,
@@ -105,7 +126,12 @@ typedef enum e_error
 	FAILED_AT_INIT_COLLECTIBLES_IMG,
 	FAILED_AT_INIT_EXIT_IMG,
 	FAILED_AT_INIT_EMPTY_IMG,
-	FAILED_ON_MALLOC_INITIAL_MAP,
+	FAILED_AT_INIT_ENEMY_IMG,
+	FAILED_AT_INIT_ENEMY_ON_EXIT_IMG,
+	FAILED_AT_INIT_BOTTOM_IMG,
+	FAILED_ON_MALLOC_MOVE_COUNT,
+	FAILED_ON_MALLOC_ENEMIES_SPEED,
+	FAILED_ON_MALLOC_RESET_MAP
 }	t_error;
 
 typedef struct s_position
@@ -113,6 +139,14 @@ typedef struct s_position
 	size_t	x;
 	size_t	y;
 }	t_position;
+
+typedef enum e_direction
+{
+	LEFT,
+	RIGHT,
+	UP,
+	DOWN
+}	t_direction;
 
 typedef struct s_img
 {
@@ -125,8 +159,17 @@ typedef struct s_img
 	int		height;
 }	t_img;
 
+typedef struct s_enemy
+{
+	t_position	initial_pos;
+	t_position	pos;
+	t_direction	direction;
+	bool		on_collectible;
+}	t_enemy;
+
 typedef struct s_map
 {
+	char		**initial_map;
 	char		**array;
 	char		**flood_floor_array;
 	size_t		height;
@@ -134,59 +177,95 @@ typedef struct s_map
 	size_t		nbr_of_collectibles;
 	bool		has_player;
 	bool		has_exit;
+	t_position	player_initial_pos;
+	size_t		initial_nbr_of_collectibles;
 	t_position	player_pos;
 	t_position	exit_pos;
+	t_enemy		*enemies;
+	size_t		nb_enemies;
 }	t_map;
 
 typedef struct s_data
 {
-	void		*mlx_ptr;
-	void		*win_ptr;
-	t_img		wall_img;
-	t_img		empty_img;
-	t_img		player_img;
-	t_img		player_on_exit_img;
-	t_img		collectible_img;
-	t_img		exit_img;
-	int			cur_img;
-	t_map		map;
-	size_t		move_count;
-	size_t		screen_witdh;
-	size_t		screen_height;
-	int			window_width;
-	int			window_height;
+	void			*mlx_ptr;
+	void			*win_ptr;
+	t_img			wall_img;
+	t_img			empty_img;
+	t_img			player_img;
+	t_img			player_on_exit_img;
+	t_img			collectible_img;
+	t_img			exit_img;
+	t_img			enemy_img;
+	t_img			enemy_on_exit_img;
+	t_img			bottom_img;
+	int				cur_img;
+	t_map			map;
+	size_t			move_count;
+	char			*move_count_str;
+	t_position		move_count_str_pos;
+	t_position		move_count_value_pos;
+	size_t			screen_witdh;
+	size_t			screen_height;
+	int				window_width;
+	int				window_height;
+	time_t			time;
+	size_t			last_move_timings;
+	size_t			last_reset_timings;
+	size_t			enemies_speed;
+	char			*enemies_speed_str;
+	t_position		enemies_speed_str_pos;
+	t_position		enemies_speed_value_pos;
+	struct timeval	start_timings;
 }	t_data;
 
-/*		images_init.c		*/
+/*			images_init_bonus.c			*/
 void	images_init(t_data *data);
 
-/*		check_map.c			*/
+/*			check_map_bonus.c			*/
 void	check_map(t_data *data, char *filename);
 
-/*		check_content.c		*/
+/*			check_content_bonus.c		*/
 void	check_content(t_data *data);
 
-/*		check_playability.c	*/
+/*			check_playability_bonus.c	*/
 void	are_map_playble(t_data *data);
 
-/*		end_program.c		*/
+/*			end_program_bonus.c			*/
 int		cross_button_event(t_data *data);
 void	end_program(t_data *data, t_error error, char *error_msg);
 void	free_map(char **map_array);
 
-/*		loop.c				*/
+/*			loop_bonus.c				*/
 void	put_in_loop(t_data *data);
 
-/*		deal_keys.c			*/
+/*			deal_keys_bonus.c			*/
 int		deal_keys(int key, t_data *data);
 
-/*		map_duplicate.c		*/
+/*			map_duplicate_bonus.c		*/
 char	**array_duplicate(char **to_dup);
 
-/*		read_all.c			*/
+/*			read_all_bonus.c			*/
 char	*read_all(int fd);
 
-/*		set_position.c		*/
+/*			position_tools_bonus.c		*/
 void	set_position(t_position *position, size_t x, size_t y);
+void	x_y_by_direction(t_position position, t_direction direction,
+			size_t *x, size_t *y);
+
+/*			enemies_bonus.c				*/
+void	init_enemies(t_data *data);
+void	reset_enemies_pos(t_data *data);
+int		deal_enemies(t_data *data);
+
+/*			enemies_moves_bonus.c		*/
+bool	can_move(t_data *data, t_enemy *enemy);
+void	enemies_moves(t_data *data, t_enemy *enemy, size_t x, size_t y);
+
+/*			times_bonus.c				*/
+size_t	get_time(struct timeval start);
+
+/*			display_infos_bonus.c		*/
+void	set_display_info_position(t_data *data);
+void	display_infos(t_data *data);
 
 #endif

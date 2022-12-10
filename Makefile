@@ -6,26 +6,50 @@
 #    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 12:06:24 by pfrances          #+#    #+#              #
-#    Updated: 2022/12/08 13:28:29 by pfrances         ###   ########.fr        #
+#    Updated: 2022/12/10 11:00:43 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = so_long
 CC = cc
+CFLAGS = -g -Wall -Wextra -Werror
 SRCS_DIR = srcs
 OBJS_DIR = objs
-SRCS =	$(addprefix $(SRCS_DIR)/,		array_duplicate.c					\
-										check_map.c							\
-										check_map_content.c					\
-										check_playability.c					\
-										deal_keys.c							\
-										end_program.c						\
-										images_init.c						\
-										loop.c								\
-										read_all.c							\
-										so_long.c)
-OBJS = $(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o))
-CFLAGS = -Wall -Wextra -Werror
+######################################### MANDATORY #########################################
+MANDATORY_SRCS_DIR = $(SRCS_DIR)/mandatory_srcs
+MANDATORY_OBJS_DIR = $(OBJS_DIR)/mandatory_objs
+MANDATORY_SRCS = $(addprefix $(MANDATORY_SRCS_DIR)/,		array_duplicate.c		\
+															check_map.c				\
+															check_map_content.c		\
+															check_playability.c		\
+															deal_keys.c				\
+															end_program.c			\
+															images_init.c			\
+															loop.c					\
+															read_all.c				\
+															set_position.c			\
+															so_long.c)
+MANDATORY_OBJS = $(subst $(MANDATORY_SRCS_DIR), $(MANDATORY_OBJS_DIR), $(MANDATORY_SRCS:.c=.o))
+########################################### BONUS ###########################################
+BONUS_SRCS_DIR = $(SRCS_DIR)/bonus_srcs
+BONUS_OBJS_DIR = $(OBJS_DIR)/bonus_objs
+BONUS_SRCS = $(addprefix $(BONUS_SRCS_DIR)/,				array_duplicate_bonus.c			\
+															check_map_bonus.c				\
+															check_map_content_bonus.c		\
+															check_playability_bonus.c		\
+															deal_keys_bonus.c				\
+															display_infos_bonus.c			\
+															end_program_bonus.c				\
+															enemies_bonus.c					\
+															enemies_moves_bonus.c			\
+															images_init_bonus.c				\
+															loop_bonus.c					\
+															read_all_bonus.c				\
+															position_tools_bonus.c			\
+															so_long_bonus.c					\
+															times_bonus.c)
+BONUS_OBJS = $(subst $(BONUS_SRCS_DIR), $(BONUS_OBJS_DIR), $(BONUS_SRCS:.c=.o))
+
 LIBS_DIR = ./libraries
 LIBFT_DIR = $(LIBS_DIR)/libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -69,11 +93,12 @@ endif
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX)
-	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX_LIBS) -o $(NAME)
 
-$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(MLX)
-	@mkdir -p $(OBJS_DIR)
+$(NAME): $(MANDATORY_OBJS) $(LIBFT) $(FT_PRINTF) $(MLX)
+	$(CC) $(CFLAGS) $(INCLUDES) $(MANDATORY_OBJS) $(LIBFT) $(FT_PRINTF) $(MLX_LIBS) -o $(NAME)
+
+$(MANDATORY_OBJS_DIR)/%.o: $(MANDATORY_SRCS_DIR)/%.c $(MLX)
+	@mkdir -p $(MANDATORY_OBJS_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) $(DEFINE_VARS) -c $< -o $@
 
 $(LIBFT):
@@ -102,4 +127,11 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+bonus: $(BONUS_OBJS) $(LIBFT) $(FT_PRINTF) $(MLX)
+	$(CC) $(CFLAGS) $(INCLUDES) $(BONUS_OBJS) $(LIBFT) $(FT_PRINTF) $(MLX_LIBS) -o $(NAME)
+
+$(BONUS_OBJS_DIR)/%.o: $(BONUS_SRCS_DIR)/%.c $(MLX)
+	@mkdir -p $(BONUS_OBJS_DIR)
+	$(CC) $(CFLAGS) $(INCLUDES) $(DEFINE_VARS) -c $< -o $@
+
+.PHONY: all clean fclean re bonus

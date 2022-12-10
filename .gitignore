@@ -4,3 +4,5 @@
 ft_printf.a
 so_long
 /libraries/*minilibx*
+*.txt
+*.sh
