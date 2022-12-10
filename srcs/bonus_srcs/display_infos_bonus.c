@@ -6,11 +6,23 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:32:13 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 10:27:14 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/10 18:25:44 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long_bonus.h"
+
+void	display_game_over(t_data *data)
+{
+	size_t	x;
+	size_t	y;
+
+	data->game_over = true;
+	x = ((data->window_width / 2) - 100) / BSIZE;
+	y = ((data->window_height / 2) - 150) / BSIZE;
+	mlx_clear_window(data->mlx_ptr, data->win_ptr);
+	put_one_image(data, x, y, data->game_over_img);
+}
 
 void	nbr_to_dst_str(size_t nbr, char *dst)
 {

@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:30:40 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 17:18:25 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/10 18:16:01 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	enemies_moves(t_data *data, t_enemy *enemy, size_t x, size_t y)
 	if (map->array[y][x] == WALL || map->array[y][x] == ENEMY)
 		return (change_direction(data, enemy, x, y));
 	if (map->array[y][x] == PLAYER)
-		end_program(data, NONE, NULL);
+		display_game_over(data);
 	if (enemy->pos.x == map->exit_pos.x && enemy->pos.y == map->exit_pos.y)
 		map->array[enemy->pos.y][enemy->pos.x] = EXIT;
 	else if (enemy->on_collectible == true)

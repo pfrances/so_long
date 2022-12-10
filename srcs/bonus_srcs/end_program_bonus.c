@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 09:47:22 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 09:18:07 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/10 17:57:22 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	destroy_images(t_data *data, t_error error)
 		mlx_destroy_image(data->mlx_ptr, data->enemy_on_exit_img.mlx_img);
 	if (error >= FAILED_AT_INIT_BOTTOM_IMG || error == NONE)
 		mlx_destroy_image(data->mlx_ptr, data->bottom_img.mlx_img);
+	if (error >= FAILED_AT_INIT_GAMEOVER_IMG || error == NONE)
+		mlx_destroy_image(data->mlx_ptr, data->game_over_img.mlx_img);
 }
 
 int	cross_button_event(t_data *data)

@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 16:54:45 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/10 18:15:30 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@
 # define ENEMY_XPM_PATH "./xpm_files/enemy.xpm"
 # define ENEMY_ON_EXIT_XPM_PATH "./xpm_files/enemy_on_exit.xpm"
 # define BOTTOM_XPM_PATH "./xpm_files/bottom.xpm"
+# define GAME_OVER_XPM_PATH "./xpm_files/game_over_screen.xpm"
 # define EMPTY '0'
 # define WALL '1'
 # define PLAYER 'P'
@@ -129,6 +130,7 @@ typedef enum e_error
 	FAILED_AT_INIT_ENEMY_IMG,
 	FAILED_AT_INIT_ENEMY_ON_EXIT_IMG,
 	FAILED_AT_INIT_BOTTOM_IMG,
+	FAILED_AT_INIT_GAMEOVER_IMG,
 	FAILED_ON_MALLOC_MOVE_COUNT,
 	FAILED_ON_MALLOC_ENEMIES_SPEED,
 	FAILED_ON_MALLOC_RESET_MAP
@@ -198,6 +200,7 @@ typedef struct s_data
 	t_img			enemy_img;
 	t_img			enemy_on_exit_img;
 	t_img			bottom_img;
+	t_img			game_over_img;
 	int				cur_img;
 	t_map			map;
 	size_t			move_count;
@@ -216,6 +219,7 @@ typedef struct s_data
 	t_position		enemies_speed_str_pos;
 	t_position		enemies_speed_value_pos;
 	struct timeval	start_timings;
+	bool			game_over;
 }	t_data;
 
 /*			images_init_bonus.c			*/
@@ -236,6 +240,7 @@ void	end_program(t_data *data, t_error error, char *error_msg);
 void	free_map(char **map_array);
 
 /*			loop_bonus.c				*/
+void	put_one_image(t_data *data, size_t x, size_t y, t_img img);
 void	put_in_loop(t_data *data);
 
 /*			deal_keys_bonus.c			*/
@@ -265,6 +270,7 @@ void	enemies_moves(t_data *data, t_enemy *enemy, size_t x, size_t y);
 size_t	get_time(struct timeval start);
 
 /*			display_infos_bonus.c		*/
+void	display_game_over(t_data *data);
 void	set_display_info_position(t_data *data);
 void	display_infos(t_data *data);
 

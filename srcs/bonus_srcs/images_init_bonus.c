@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 10:02:05 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/09 17:29:33 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/10 17:59:35 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,6 @@ void	images_init(t_data *data)
 			FAILED_AT_INIT_IMGS_MSG);
 	if (!set_xpm_img(data->mlx_ptr, &data->bottom_img, BOTTOM_XPM_PATH))
 		end_program(data, FAILED_AT_INIT_BOTTOM_IMG, FAILED_AT_INIT_IMGS_MSG);
+	if (!set_xpm_img(data->mlx_ptr, &data->game_over_img, GAME_OVER_XPM_PATH))
+		end_program(data, FAILED_AT_INIT_GAMEOVER_IMG, FAILED_AT_INIT_IMGS_MSG);
 }

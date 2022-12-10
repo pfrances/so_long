@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:00:47 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 16:27:37 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/10 18:03:04 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,16 @@ int	render_map(t_data *data)
 	size_t	x;
 	size_t	y;
 
-	if (data->win_ptr == NULL)
+	if (data->win_ptr == NULL || data->game_over == true)
 		return (1);
 	y = 0;
 	if (get_time(data->start_timings)
 		> data->last_move_timings + data->enemies_speed)
 		deal_enemies(data);
-	while (y < data->map.height)
+	while (y < data->map.height && data->game_over == false)
 	{
 		x = 0;
-		while (x < data->map.width)
+		while (x < data->map.width && data->game_over == false)
 		{
 			put_images(data, x, y);
 			x++;
@@ -70,6 +70,7 @@ int	render_map(t_data *data)
 
 void	last_setup_before_loop(t_data *data)
 {
+	data->game_over = false;
 	gettimeofday(&data->start_timings, NULL);
 	data->last_move_timings = get_time(data->start_timings);
 	data->last_reset_timings = data->last_move_timings;
