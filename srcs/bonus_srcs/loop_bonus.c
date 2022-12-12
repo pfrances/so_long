@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:00:47 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/12 15:51:08 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 16:35:08 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int	render_map(t_data *data)
 		return (1);
 	if (data->game_over == true)
 		return (0);
-	deal_enemies(data);
+	if (data->map.nb_enemies > 0)
+		deal_enemies(data);
 	deal_sprites(data);
 	y = 0;
 	while (y < data->map.height && data->game_over == false)
