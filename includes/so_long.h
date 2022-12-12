@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/12 17:28:27 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 19:44:22 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,6 @@
 # define BSIZE 100
 # define HEIGHT_MIN 3
 # define WITDH_MIN 3
-
-# ifndef SCREEN_HEIGHT
-#  define SCREEN_HEIGHT 1080
-# endif
-
-# ifndef SCREEN_WIDTH
-#  define SCREEN_WIDTH 1920
-# endif
 
 # define MAP_FILE_EXTENSION ".ber"
 # define WALL_XPM_PATH "./xpm_files/wall_1.xpm"
