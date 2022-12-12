@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:45:46 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/08 14:00:57 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/11 12:10:57 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,11 @@ void	get_file_content(t_data *data, char *filename)
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		end_program(data, FAILED_AT_OPENING_MAP, FAILED_AT_OPENING_MAP_MSG);
+		end_program(data, OPENING_MAP_FAILED, FAILED_AT_OPENING_MAP_MSG);
 	content = read_all(fd);
 	close(fd);
 	if (content == NULL)
-		end_program(data, FAILED_AT_READING_MAP, FAILED_AT_READING_MAP_MSG);
+		end_program(data, READING_MAP_FAILED, FAILED_AT_READING_MAP_MSG);
 	content = skip_head_tail_empty_lines(content);
 	if (content == NULL)
 		end_program(data, EMPTY_MAP, EMPTY_MAP_MSG);
@@ -99,7 +99,7 @@ void	get_file_content(t_data *data, char *filename)
 	data->map.array = ft_split(content, '\n');
 	free(content);
 	if (data->map.array == NULL)
-		end_program(data, FAILED_ON_MALLOC, FAILED_ON_MALLOC_MSG);
+		end_program(data, MALLOC_FAILED, FAILED_ON_MALLOC_MSG);
 }
 
 void	check_map(t_data *data, char *filename)

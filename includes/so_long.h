@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 10:34:18 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 16:12:55 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@
 # endif
 
 # define MAP_FILE_EXTENSION ".ber"
-# define WALL_XPM_PATH "./xpm_files/wall.xpm"
+# define WALL_XPM_PATH "./xpm_files/wall_1.xpm"
 # define EMPTY_XPM_PATH "./xpm_files/empty.xpm"
-# define PLAYER_XPM_PATH "./xpm_files/player.xpm"
-# define PLAYER_ON_EXIT_XPM_PATH "./xpm_files/player_on_exit.xpm"
+# define PLAYER_XPM_PATH "./xpm_files/player_1.xpm"
+# define PLAYER_ON_EXIT_XPM_PATH "./xpm_files/player_on_exit_1.xpm"
 # define COLLECTIBLE_XPM_PATH "./xpm_files/collectible.xpm"
 # define EXIT_XPM_PATH "./xpm_files/exit.xpm"
 # define EMPTY '0'
@@ -76,15 +76,14 @@
 
 typedef enum e_error
 {
-	NONE,
 	WRONG_NB_OF_ARGS,
 	WRONG_MAP_NAME,
-	FAILED_AT_OPENING_MAP,
-	FAILED_AT_READING_MAP,
+	OPENING_MAP_FAILED,
+	READING_MAP_FAILED,
 	EMPTY_MAP,
 	FAILED_AT_CLOSING_MAP,
 	HAS_EMPTY_LINE,
-	FAILED_ON_MALLOC,
+	MALLOC_FAILED,
 	NOT_BORDERED_BY_WALL,
 	TOO_MUCH_PLAYER,
 	TO_MUCH_EXIT,
@@ -95,17 +94,18 @@ typedef enum e_error
 	HAS_NO_PLAYER,
 	HAS_NO_EXIT,
 	HAS_NO_COLLECTIBLE,
-	FAILED_ON_MALLOC_FLOODED,
+	FLOODED_MALLOC_FAILED,
 	MAP_NOT_PLAYABLE,
-	FAILED_AT_INIT_MLX,
-	FAILED_AT_INIT_WINDOW,
+	INIT_MLX_FAILED,
+	INIT_WINDOW_FAILED,
 	FAILED_AT_INIT_WALL_IMG,
 	FAILED_AT_INIT_PLAYER_IMG,
-	FAILED_AT_INIT_PLAYER_ON_INIT_IMG,
+	FAILED_AT_INIT_PLAYER_ON_EXIT_IMG,
 	FAILED_AT_INIT_COLLECTIBLES_IMG,
-	FAILED_AT_INIT_EXIT_IMG,
-	FAILED_AT_INIT_EMPTY_IMG,
-	FAILED_ON_MALLOC_INITIAL_MAP,
+	INIT_EXIT_IMG_FAILED,
+	INIT_EMPTY_IMG_FAILED,
+	INITIAL_MAP_MALLOC_FAILED,
+	NONE
 }	t_error;
 
 typedef struct s_position

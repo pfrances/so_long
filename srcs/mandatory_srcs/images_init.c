@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 10:02:05 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/08 10:51:56 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/11 12:17:48 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	images_init(t_data *data)
 		end_program(data, FAILED_AT_INIT_COLLECTIBLES_IMG,
 			FAILED_AT_INIT_IMGS_MSG);
 	if (set_xpm_img(data->mlx_ptr, &data->exit_img, EXIT_XPM_PATH) == false)
-		end_program(data, FAILED_AT_INIT_EXIT_IMG, FAILED_AT_INIT_IMGS_MSG);
+		end_program(data, INIT_EXIT_IMG_FAILED, FAILED_AT_INIT_IMGS_MSG);
 	if (set_xpm_img(data->mlx_ptr, &data->empty_img, EMPTY_XPM_PATH) == false)
-		end_program(data, FAILED_AT_INIT_EMPTY_IMG, FAILED_AT_INIT_IMGS_MSG);
+		end_program(data, INIT_EMPTY_IMG_FAILED, FAILED_AT_INIT_IMGS_MSG);
 }

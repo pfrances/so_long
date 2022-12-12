@@ -6,7 +6,7 @@
 #    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 12:06:24 by pfrances          #+#    #+#              #
-#    Updated: 2022/12/10 11:00:43 by pfrances         ###   ########.fr        #
+#    Updated: 2022/12/12 15:52:00 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,16 +38,20 @@ BONUS_SRCS = $(addprefix $(BONUS_SRCS_DIR)/,				array_duplicate_bonus.c			\
 															check_map_content_bonus.c		\
 															check_playability_bonus.c		\
 															deal_keys_bonus.c				\
+															display_info_init_bonus.c		\
 															display_infos_bonus.c			\
 															end_program_bonus.c				\
+															end_program_frees_bonus.c		\
 															enemies_bonus.c					\
 															enemies_moves_bonus.c			\
 															images_init_bonus.c				\
+															images_init_tools_bonus.c		\
 															loop_bonus.c					\
 															read_all_bonus.c				\
 															position_tools_bonus.c			\
 															so_long_bonus.c					\
-															times_bonus.c)
+															times_bonus.c					\
+															sprites_bonus.c)
 BONUS_OBJS = $(subst $(BONUS_SRCS_DIR), $(BONUS_OBJS_DIR), $(BONUS_SRCS:.c=.o))
 
 LIBS_DIR = ./libraries

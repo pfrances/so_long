@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 18:15:30 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 15:51:01 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,14 @@
 # define WITDH_MIN 3
 # define SPACE_FOR_MSG 20
 # define DOUBLE_R_TIMING 250000
+# define SPRITE_TIMING 500000
 # define DEFAULT_SPAWN_TIMING 1000000
 # define ENEMIES_SPEED_MIN 5000000
 # define ENEMIES_SPEED_MAX 200000
 # define ENEMIES_SPEED_STEP 200000
-# define ENEMIES_SPEED_MSG "ENEMIES SPEED: "
-# define STEPS_COUNT_MSG "STEP(S): "
+# define ENEMIES_SPEED_MSG "ENEMIES SPEED:"
+# define STEPS_COUNT_MSG "STEP(S):"
+# define TIMER_MSG "TIME:"
 # define SIZE_MAX_DIGITS 20
 # define WHITE 0x00FFFFFF
 # define BLACK 0x00000000
@@ -52,14 +54,19 @@
 # endif
 
 # define MAP_FILE_EXTENSION ".ber"
-# define WALL_XPM_PATH "./xpm_files/wall.xpm"
-# define EMPTY_XPM_PATH "./xpm_files/empty.xpm"
-# define PLAYER_XPM_PATH "./xpm_files/player.xpm"
-# define PLAYER_ON_EXIT_XPM_PATH "./xpm_files/player_on_exit.xpm"
+# define WALL1_XPM_PATH "./xpm_files/wall_1.xpm"
+# define WALL2_XPM_PATH "./xpm_files/wall_2.xpm"
+# define PLAYER1_XPM_PATH "./xpm_files/player_1.xpm"
+# define PLAYER2_XPM_PATH "./xpm_files/player_2.xpm"
+# define PLAYER_ON_EXIT1_XPM_PATH "./xpm_files/player_on_exit_1.xpm"
+# define PLAYER_ON_EXIT2_XPM_PATH "./xpm_files/player_on_exit_2.xpm"
 # define COLLECTIBLE_XPM_PATH "./xpm_files/collectible.xpm"
 # define EXIT_XPM_PATH "./xpm_files/exit.xpm"
-# define ENEMY_XPM_PATH "./xpm_files/enemy.xpm"
-# define ENEMY_ON_EXIT_XPM_PATH "./xpm_files/enemy_on_exit.xpm"
+# define EMPTY_XPM_PATH "./xpm_files/empty.xpm"
+# define ENEMY1_XPM_PATH "./xpm_files/enemy_1.xpm"
+# define ENEMY2_XPM_PATH "./xpm_files/enemy_2.xpm"
+# define ENEMY_ON_EXIT1_XPM_PATH "./xpm_files/enemy_on_exit_1.xpm"
+# define ENEMY_ON_EXIT2_XPM_PATH "./xpm_files/enemy_on_exit_2.xpm"
 # define BOTTOM_XPM_PATH "./xpm_files/bottom.xpm"
 # define GAME_OVER_XPM_PATH "./xpm_files/game_over_screen.xpm"
 # define EMPTY '0'
@@ -68,6 +75,17 @@
 # define COLLECTIBLE 'C'
 # define EXIT 'E'
 # define ENEMY 'W'
+
+# define NB_OF_WALL_IMG 2
+# define NB_OF_PLAYER_IMG 2
+# define NB_OF_PLAYER_ON_EXIT_IMG 2
+# define NB_OF_COLLECTIBLE_IMG 1
+# define NB_OF_EXIT_IMG 1
+# define NB_OF_EMPTY_IMG 1
+# define NB_OF_ENEMY_IMG 2
+# define NB_OF_ENEMY_ON_EXIT_IMG 2
+# define NB_OF_BOTTOM_IMG 1
+# define NB_OF_GAME_OVER_IMG 1
 
 # define ERROR_MSG "Error"
 # define WRONG_NB_OF_ARGS_MSG "The programm take only one argument: map path."
@@ -96,15 +114,14 @@
 
 typedef enum e_error
 {
-	NONE,
 	WRONG_NB_OF_ARGS,
 	WRONG_MAP_NAME,
-	FAILED_AT_OPENING_MAP,
-	FAILED_AT_READING_MAP,
+	OPENING_MAP_FAILED,
+	READING_MAP_FAILED,
 	EMPTY_MAP,
-	FAILED_AT_CLOSING_MAP,
+	CLOSING_MAP_FAILED,
 	HAS_EMPTY_LINE,
-	FAILED_ON_MALLOC,
+	MALLOC_FAILED,
 	NOT_BORDERED_BY_WALL,
 	TOO_MUCH_PLAYER,
 	TO_MUCH_EXIT,
@@ -115,32 +132,41 @@ typedef enum e_error
 	HAS_NO_PLAYER,
 	HAS_NO_EXIT,
 	HAS_NO_COLLECTIBLE,
-	FAILED_ON_MALLOC_FLOODED,
+	FLOODED_MALLOC_FAILED,
 	MAP_NOT_PLAYABLE,
-	FAILED_ON_MALLOC_INITIAL_MAP,
-	FAILED_ON_MALLOC_ENEMIES,
-	FAILED_AT_INIT_MLX,
-	FAILED_AT_INIT_WINDOW,
-	FAILED_AT_INIT_WALL_IMG,
-	FAILED_AT_INIT_PLAYER_IMG,
-	FAILED_AT_INIT_PLAYER_ON_INIT_IMG,
-	FAILED_AT_INIT_COLLECTIBLES_IMG,
-	FAILED_AT_INIT_EXIT_IMG,
-	FAILED_AT_INIT_EMPTY_IMG,
-	FAILED_AT_INIT_ENEMY_IMG,
-	FAILED_AT_INIT_ENEMY_ON_EXIT_IMG,
-	FAILED_AT_INIT_BOTTOM_IMG,
-	FAILED_AT_INIT_GAMEOVER_IMG,
-	FAILED_ON_MALLOC_MOVE_COUNT,
-	FAILED_ON_MALLOC_ENEMIES_SPEED,
-	FAILED_ON_MALLOC_RESET_MAP
+	INITIAL_MAP_MALLOC_FAILED,
+	ENEMIES_MALLOC_FAILED,
+	INIT_MLX_FAILED,
+	INIT_WINDOW_FAILED,
+	WALL_IMG_MALLOC_FAILED,
+	PLAYER_IMG_MALLOC_FAILED,
+	PLAYER_ON_EXIT_IMG_MALLOC_FAILED,
+	COLLECTIBLE_IMG_MALLOC_FAILED,
+	EXIT_IMG_MALLOC_FAILED,
+	EMPTY_IMG_MALLOC_FAILED,
+	ENEMY_IMG_MALLOC_FAILED,
+	ENEMY_ON_EXIT_IMG_MALLOC_FAILED,
+	BOTTOM_IMG_MALLOC_FAILED,
+	GAME_OVER_IMG_MALLOC_FAILED,
+	INIT_WALL1_IMG_FAILED,
+	INIT_WALL2_IMG_FAILED,
+	INIT_PLAYER1_IMG_FAILED,
+	INIT_PLAYER2_IMG_FAILED,
+	INIT_PLAYER_ON_EXIT1_IMG_FAILED,
+	INIT_PLAYER_ON_EXIT2_IMG_FAILED,
+	INIT_COLLECTIBLE_IMG_FAILED,
+	INIT_EXIT_IMG_FAILED,
+	INIT_EMPTY_IMG_FAILED,
+	INIT_ENEMY1_IMG_FAILED,
+	INIT_ENEMY2_IMG_FAILED,
+	INIT_ENEMY_ON_EXIT1_IMG_FAILED,
+	INIT_ENEMY_ON_EXIT2_IMG_FAILED,
+	INIT_BOTTOM_IMG_FAILED,
+	INIT_GAME_OVER_IMG_FAILED,
+	INFO_BUFF_MALLOC_FAILED,
+	RESET_MAP_MALLOC_FAILED,
+	NONE
 }	t_error;
-
-typedef struct s_position
-{
-	size_t	x;
-	size_t	y;
-}	t_position;
 
 typedef enum e_direction
 {
@@ -149,6 +175,12 @@ typedef enum e_direction
 	UP,
 	DOWN
 }	t_direction;
+
+typedef struct s_position
+{
+	size_t	x;
+	size_t	y;
+}	t_position;
 
 typedef struct s_img
 {
@@ -159,6 +191,10 @@ typedef struct s_img
 	int		endian;
 	int		width;
 	int		height;
+	char	*path;
+	t_error	error;
+	char	*error_msg;
+	bool	last;
 }	t_img;
 
 typedef struct s_enemy
@@ -185,45 +221,59 @@ typedef struct s_map
 	t_position	exit_pos;
 	t_enemy		*enemies;
 	size_t		nb_enemies;
+	size_t		enemies_moves_turn_over;
 }	t_map;
+
+typedef struct s_info
+{
+	int			color;
+	size_t		value;
+	t_position	value_pos;
+	char		*title_str;
+	t_position	title_str_pos;
+}	t_info;
 
 typedef struct s_data
 {
 	void			*mlx_ptr;
 	void			*win_ptr;
-	t_img			wall_img;
-	t_img			empty_img;
-	t_img			player_img;
-	t_img			player_on_exit_img;
-	t_img			collectible_img;
-	t_img			exit_img;
-	t_img			enemy_img;
-	t_img			enemy_on_exit_img;
-	t_img			bottom_img;
-	t_img			game_over_img;
+	t_img			*wall_img;
+	t_img			*player_img;
+	t_img			*player_on_exit_img;
+	t_img			*collectible_img;
+	t_img			*exit_img;
+	t_img			*empty_img;
+	t_img			*enemy_img;
+	t_img			*enemy_on_exit_img;
+	t_img			*bottom_img;
+	t_img			*game_over_img;
+	size_t			sprite_cnt;
+	size_t			last_sprite_time;
 	int				cur_img;
 	t_map			map;
-	size_t			move_count;
-	char			*move_count_str;
-	t_position		move_count_str_pos;
-	t_position		move_count_value_pos;
 	size_t			screen_witdh;
 	size_t			screen_height;
 	int				window_width;
 	int				window_height;
 	time_t			time;
-	size_t			last_move_timings;
-	size_t			last_reset_timings;
-	size_t			enemies_speed;
-	char			*enemies_speed_str;
-	t_position		enemies_speed_str_pos;
-	t_position		enemies_speed_value_pos;
-	struct timeval	start_timings;
+	size_t			last_move_time;
+	size_t			last_reset_time;
+	t_info			move_count;
+	t_info			timer;
+	t_info			enemies_speed;
+	char			*info_value_buff;
+	struct timeval	start_time;
 	bool			game_over;
 }	t_data;
 
 /*			images_init_bonus.c			*/
 void	images_init(t_data *data);
+
+/*			images_init_tools_bonus.c	*/
+t_img	*image_allocation(t_data *data, size_t nb,
+			t_error error, char *error_msg);
+void	set_img_info(t_img *img, char *path, t_error error);
+void	set_xpm_img(t_data *data, t_img *img);
 
 /*			check_map_bonus.c			*/
 void	check_map(t_data *data, char *filename);
@@ -237,6 +287,9 @@ void	are_map_playble(t_data *data);
 /*			end_program_bonus.c			*/
 int		cross_button_event(t_data *data);
 void	end_program(t_data *data, t_error error, char *error_msg);
+
+/*			end_program_frees_bonus.c	*/
+void	free_all_img(t_data *data, t_error error);
 void	free_map(char **map_array);
 
 /*			loop_bonus.c				*/
@@ -260,7 +313,7 @@ void	x_y_by_direction(t_position position, t_direction direction,
 /*			enemies_bonus.c				*/
 void	init_enemies(t_data *data);
 void	reset_enemies_pos(t_data *data);
-int		deal_enemies(t_data *data);
+void	deal_enemies(t_data *data);
 
 /*			enemies_moves_bonus.c		*/
 bool	can_move(t_data *data, t_enemy *enemy);
@@ -271,7 +324,13 @@ size_t	get_time(struct timeval start);
 
 /*			display_infos_bonus.c		*/
 void	display_game_over(t_data *data);
-void	set_display_info_position(t_data *data);
 void	display_infos(t_data *data);
+
+/*			display_infos_init_bonus.c	*/
+void	display_info_init(t_data *data);
+
+/*			sprites_bonus.c				*/
+void	deal_sprites(t_data *data);
+t_img	find_enemy_sprite(t_data *data, size_t enemy_x, size_t enemy_y);
 
 #endif

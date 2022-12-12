@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:24:13 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 12:21:30 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/11 12:13:41 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void	init_window(t_data *data)
 {
 	data->mlx_ptr = mlx_init();
 	if (data->mlx_ptr == NULL)
-		end_program(data, FAILED_AT_INIT_MLX, FAILED_AT_INIT_MLX_MSG);
+		end_program(data, INIT_MLX_FAILED, FAILED_AT_INIT_MLX_MSG);
 	data->win_ptr = mlx_new_window(data->mlx_ptr, data->window_width,
 			data->window_height, "so_long");
 	if (data->win_ptr == NULL)
-		end_program(data, FAILED_AT_INIT_WINDOW, FAILED_AT_INIT_WINDOW_MSG);
+		end_program(data, INIT_WINDOW_FAILED, FAILED_AT_INIT_WINDOW_MSG);
 }
 
 int	main(int argc, char *argv[])

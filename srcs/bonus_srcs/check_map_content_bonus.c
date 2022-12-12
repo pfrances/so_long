@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:46:33 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/09 16:44:16 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 15:16:00 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	check_content(t_data *data)
 	data->map.has_player = false;
 	data->map.has_exit = false;
 	data->map.nbr_of_collectibles = 0;
-	data->move_count = 0;
+	data->move_count.value = 0;
 	while (data->map.array[i] != NULL)
 	{
 		if (i != 0 && ft_strlen(data->map.array[i]) != data->map.width)

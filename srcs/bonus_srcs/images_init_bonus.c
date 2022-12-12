@@ -6,44 +6,81 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 10:02:05 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 17:59:35 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:13:06 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long_bonus.h"
 
-bool	set_xpm_img(void *mlx_ptr, t_img *img, char *path)
+void	set_all_img_infos(t_data *data)
 {
-	img->mlx_img = mlx_xpm_file_to_image(mlx_ptr, path,
-			&img->width, &img->height);
-	return (img->mlx_img != NULL);
+	set_img_info(&data->wall_img[0], WALL1_XPM_PATH, INIT_WALL1_IMG_FAILED);
+	set_img_info(&data->wall_img[1], WALL2_XPM_PATH, INIT_WALL2_IMG_FAILED);
+	set_img_info(&data->player_img[0],
+		PLAYER1_XPM_PATH, INIT_PLAYER1_IMG_FAILED);
+	set_img_info(&data->player_img[1],
+		PLAYER2_XPM_PATH, INIT_PLAYER2_IMG_FAILED);
+	set_img_info(&data->player_on_exit_img[0],
+		PLAYER_ON_EXIT1_XPM_PATH, INIT_PLAYER_ON_EXIT1_IMG_FAILED);
+	set_img_info(&data->player_on_exit_img[1],
+		PLAYER_ON_EXIT2_XPM_PATH, INIT_PLAYER_ON_EXIT2_IMG_FAILED);
+	set_img_info(&data->collectible_img[0],
+		COLLECTIBLE_XPM_PATH, INIT_COLLECTIBLE_IMG_FAILED);
+	set_img_info(&data->exit_img[0], EXIT_XPM_PATH, INIT_EXIT_IMG_FAILED);
+	set_img_info(&data->empty_img[0], EMPTY_XPM_PATH, INIT_EMPTY_IMG_FAILED);
+	set_img_info(&data->enemy_img[0], ENEMY1_XPM_PATH, INIT_ENEMY1_IMG_FAILED);
+	set_img_info(&data->enemy_img[1], ENEMY2_XPM_PATH, INIT_ENEMY2_IMG_FAILED);
+	set_img_info(&data->enemy_on_exit_img[0],
+		ENEMY_ON_EXIT1_XPM_PATH, INIT_ENEMY_ON_EXIT1_IMG_FAILED);
+	set_img_info(&data->enemy_on_exit_img[1],
+		ENEMY_ON_EXIT2_XPM_PATH, INIT_ENEMY_ON_EXIT2_IMG_FAILED);
+	set_img_info(&data->bottom_img[0], BOTTOM_XPM_PATH, INIT_BOTTOM_IMG_FAILED);
+	set_img_info(&data->game_over_img[0],
+		GAME_OVER_XPM_PATH, INIT_GAME_OVER_IMG_FAILED);
+}
+
+void	prepare_all_img_allocations(t_data *data)
+{
+	data->wall_img = image_allocation(data, NB_OF_WALL_IMG,
+			WALL_IMG_MALLOC_FAILED, FAILED_ON_MALLOC_MSG);
+	data->player_img = image_allocation(data, NB_OF_PLAYER_IMG,
+			PLAYER_IMG_MALLOC_FAILED, FAILED_ON_MALLOC_MSG);
+	data->player_on_exit_img = image_allocation(data, NB_OF_PLAYER_ON_EXIT_IMG,
+			PLAYER_ON_EXIT_IMG_MALLOC_FAILED, FAILED_ON_MALLOC_MSG);
+	data->collectible_img = image_allocation(data, NB_OF_COLLECTIBLE_IMG,
+			COLLECTIBLE_IMG_MALLOC_FAILED, FAILED_ON_MALLOC_MSG);
+	data->exit_img = image_allocation(data, NB_OF_EXIT_IMG,
+			EXIT_IMG_MALLOC_FAILED, FAILED_ON_MALLOC_MSG);
+	data->empty_img = image_allocation(data, NB_OF_EMPTY_IMG,
+			EMPTY_IMG_MALLOC_FAILED, FAILED_ON_MALLOC_MSG);
+	data->enemy_img = image_allocation(data, NB_OF_ENEMY_IMG,
+			ENEMY_IMG_MALLOC_FAILED, FAILED_ON_MALLOC_MSG);
+	data->enemy_on_exit_img = image_allocation(data, NB_OF_ENEMY_ON_EXIT_IMG,
+			ENEMY_ON_EXIT_IMG_MALLOC_FAILED, FAILED_ON_MALLOC_MSG);
+	data->bottom_img = image_allocation(data, NB_OF_BOTTOM_IMG,
+			BOTTOM_IMG_MALLOC_FAILED, FAILED_ON_MALLOC_MSG);
+	data->game_over_img = image_allocation(data, NB_OF_GAME_OVER_IMG,
+			GAME_OVER_IMG_MALLOC_FAILED, FAILED_ON_MALLOC_MSG);
 }
 
 void	images_init(t_data *data)
 {
-	if (!set_xpm_img(data->mlx_ptr, &data->wall_img, WALL_XPM_PATH))
-		end_program(data, FAILED_AT_INIT_WALL_IMG, FAILED_AT_INIT_IMGS_MSG);
-	if (!set_xpm_img(data->mlx_ptr, &data->player_img, PLAYER_XPM_PATH))
-		end_program(data, FAILED_AT_INIT_PLAYER_IMG, FAILED_AT_INIT_IMGS_MSG);
-	if (!set_xpm_img(data->mlx_ptr, &data->player_on_exit_img,
-			PLAYER_ON_EXIT_XPM_PATH))
-		end_program(data, FAILED_AT_INIT_PLAYER_IMG, FAILED_AT_INIT_IMGS_MSG);
-	if (!set_xpm_img(data->mlx_ptr, &data->collectible_img,
-			COLLECTIBLE_XPM_PATH))
-		end_program(data, FAILED_AT_INIT_COLLECTIBLES_IMG,
-			FAILED_AT_INIT_IMGS_MSG);
-	if (!set_xpm_img(data->mlx_ptr, &data->exit_img, EXIT_XPM_PATH))
-		end_program(data, FAILED_AT_INIT_EXIT_IMG, FAILED_AT_INIT_IMGS_MSG);
-	if (!set_xpm_img(data->mlx_ptr, &data->empty_img, EMPTY_XPM_PATH))
-		end_program(data, FAILED_AT_INIT_EMPTY_IMG, FAILED_AT_INIT_IMGS_MSG);
-	if (!set_xpm_img(data->mlx_ptr, &data->enemy_img, ENEMY_XPM_PATH))
-		end_program(data, FAILED_AT_INIT_ENEMY_IMG, FAILED_AT_INIT_IMGS_MSG);
-	if (!set_xpm_img(data->mlx_ptr, &data->enemy_on_exit_img,
-			ENEMY_ON_EXIT_XPM_PATH))
-		end_program(data, FAILED_AT_INIT_ENEMY_ON_EXIT_IMG,
-			FAILED_AT_INIT_IMGS_MSG);
-	if (!set_xpm_img(data->mlx_ptr, &data->bottom_img, BOTTOM_XPM_PATH))
-		end_program(data, FAILED_AT_INIT_BOTTOM_IMG, FAILED_AT_INIT_IMGS_MSG);
-	if (!set_xpm_img(data->mlx_ptr, &data->game_over_img, GAME_OVER_XPM_PATH))
-		end_program(data, FAILED_AT_INIT_GAMEOVER_IMG, FAILED_AT_INIT_IMGS_MSG);
+	prepare_all_img_allocations(data);
+	set_all_img_infos(data);
+	set_xpm_img(data, &data->wall_img[0]);
+	set_xpm_img(data, &data->wall_img[1]);
+	set_xpm_img(data, &data->player_img[0]);
+	set_xpm_img(data, &data->player_img[1]);
+	set_xpm_img(data, &data->player_on_exit_img[0]);
+	set_xpm_img(data, &data->player_on_exit_img[1]);
+	set_xpm_img(data, &data->collectible_img[0]);
+	set_xpm_img(data, &data->exit_img[0]);
+	set_xpm_img(data, &data->empty_img[0]);
+	set_xpm_img(data, &data->enemy_img[0]);
+	set_xpm_img(data, &data->enemy_img[1]);
+	set_xpm_img(data, &data->enemy_on_exit_img[0]);
+	set_xpm_img(data, &data->enemy_on_exit_img[1]);
+	set_xpm_img(data, &data->bottom_img[0]);
+	set_xpm_img(data, &data->game_over_img[0]);
+	data->sprite_cnt = 0;
 }

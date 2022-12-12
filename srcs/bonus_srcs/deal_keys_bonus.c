@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:47:44 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 18:53:53 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 15:57:25 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	player_moves(t_data *data, size_t x, size_t y)
 	map = &data->map;
 	if (map->array[y][x] == WALL)
 		return ;
-	data->move_count++;
+	data->move_count.value++;
 	if ((map->array[y][x] == EXIT && map->nbr_of_collectibles == 0)
 		|| map->array[y][x] == ENEMY)
 		display_game_over(data);
@@ -46,15 +46,18 @@ void	reset_game(t_data *data)
 	free_map(data->map.array);
 	data->map.array = array_duplicate(data->map.initial_map);
 	if (data->map.array == NULL)
-		end_program(data, FAILED_ON_MALLOC_RESET_MAP, FAILED_ON_MALLOC_MSG);
+		end_program(data, RESET_MAP_MALLOC_FAILED, FAILED_ON_MALLOC_MSG);
 	data->map.player_pos = data->map.player_initial_pos;
 	data->map.nbr_of_collectibles = data->map.initial_nbr_of_collectibles;
 	reset_enemies_pos(data);
-	if (get_time(data->start_timings)
-		< data->last_reset_timings + DOUBLE_R_TIMING)
-		data->enemies_speed = DEFAULT_SPAWN_TIMING;
-	data->last_reset_timings = get_time(data->start_timings);
-	data->move_count = 0;
+	if (get_time(data->start_time)
+		< data->last_reset_time + DOUBLE_R_TIMING)
+		data->enemies_speed.value = DEFAULT_SPAWN_TIMING;
+	gettimeofday(&data->start_time, NULL);
+	data->last_reset_time = get_time(data->start_time);
+	data->last_move_time = get_time(data->start_time);
+	data->map.enemies_moves_turn_over = 0;
+	data->move_count.value = 0;
 	data->game_over = false;
 }
 
@@ -94,10 +97,9 @@ int	deal_keys(int key, t_data *data)
 		player_moves(data, data->map.player_pos.x + 1, data->map.player_pos.y);
 	else if (key == XK_t)
 		teleport_to_start_pos(data);
-	else if (key == XK_Up && data->enemies_speed > ENEMIES_SPEED_MAX)
-		data->enemies_speed -= ENEMIES_SPEED_STEP;
-	else if (key == XK_Down && data->enemies_speed < ENEMIES_SPEED_MIN)
-		data->enemies_speed += ENEMIES_SPEED_STEP;
-	display_infos(data);
+	else if (key == XK_Up && data->enemies_speed.value > ENEMIES_SPEED_MAX)
+		data->enemies_speed.value -= ENEMIES_SPEED_STEP;
+	else if (key == XK_Down && data->enemies_speed.value < ENEMIES_SPEED_MIN)
+		data->enemies_speed.value += ENEMIES_SPEED_STEP;
 	return (0);
 }

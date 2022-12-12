@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:46:53 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/08 11:44:32 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/11 12:11:56 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	are_map_playble(t_data *data)
 	map = &data->map;
 	map->flood_floor_array = array_duplicate(map->array);
 	if (map->flood_floor_array == NULL)
-		end_program(data, FAILED_ON_MALLOC_FLOODED, FAILED_ON_MALLOC_MSG);
+		end_program(data, FLOODED_MALLOC_FAILED, FAILED_ON_MALLOC_MSG);
 	flood_floor(map, map->player_pos.x, map->player_pos.y);
 	if (flooded_floor_check(map->flood_floor_array) == false)
 		end_program(data, MAP_NOT_PLAYABLE, MAP_NOT_PLAYABLE_MSG);

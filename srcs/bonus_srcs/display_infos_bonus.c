@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:32:13 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 18:25:44 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 15:54:17 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@ void	display_game_over(t_data *data)
 {
 	size_t	x;
 	size_t	y;
+	size_t	sprite;
 
 	data->game_over = true;
 	x = ((data->window_width / 2) - 100) / BSIZE;
 	y = ((data->window_height / 2) - 150) / BSIZE;
+	sprite = data->last_sprite_time % NB_OF_GAME_OVER_IMG;
 	mlx_clear_window(data->mlx_ptr, data->win_ptr);
-	put_one_image(data, x, y, data->game_over_img);
+	put_one_image(data, x, y, data->game_over_img[sprite]);
 }
 
 void	nbr_to_dst_str(size_t nbr, char *dst)
@@ -55,13 +57,13 @@ void	us_to_sec_ms_char(size_t nbr, char *dst)
 	len = ft_strlen(dst);
 	if (len > 6)
 	{
-		dst[2] = dst[1];
-		dst[1] = '.';
-		dst[3] = ' ';
-		dst[4] = 's';
-		dst[5] = '\0';
+		dst[len - 5] = dst[len - 6];
+		dst[len - 6] = '.';
+		dst[len - 4] = ' ';
+		dst[len - 3] = 's';
+		dst[len - 2] = '\0';
 	}
-	else if (len == 6)
+	else if (len <= 6)
 	{
 		dst[3] = ' ';
 		dst[4] = 'm';
@@ -70,45 +72,29 @@ void	us_to_sec_ms_char(size_t nbr, char *dst)
 	}
 }
 
-void	set_display_info_position(t_data *data)
+void	display_one_info(t_data *data, t_info *info)
 {
-	size_t	y_pos;
-
-	y_pos = data->window_height - 5;
-	data->move_count_str_pos.x = 10;
-	data->move_count_str_pos.y = y_pos;
-	data->move_count_value_pos.x = data->move_count_str_pos.x + 60;
-	data->move_count_value_pos.y = y_pos;
-	data->enemies_speed_str_pos.x = data->window_width - 130;
-	data->enemies_speed_str_pos.y = y_pos;
-	data->enemies_speed_value_pos.x = data->enemies_speed_str_pos.x + 90;
-	data->enemies_speed_value_pos.y = y_pos;
+	mlx_string_put(data->mlx_ptr, data->win_ptr, info->title_str_pos.x,
+		info->title_str_pos.y, info->color, info->title_str);
+	us_to_sec_ms_char(info->value, data->info_value_buff);
+	mlx_string_put(data->mlx_ptr, data->win_ptr, info->value_pos.x,
+		info->value_pos.y, info->color, data->info_value_buff);
 }
 
 void	display_infos(t_data *data)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while (i < data->window_width)
+	while (i < data->map.width)
 	{
-		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-			data->bottom_img.mlx_img, i, data->window_height - SPACE_FOR_MSG);
-		i += BSIZE;
+		put_one_image(data, i, data->map.height,
+			data->bottom_img[data->last_sprite_time % NB_OF_BOTTOM_IMG]);
+		i++;
 	}
-	mlx_string_put(data->mlx_ptr, data->win_ptr, data->move_count_str_pos.x,
-		data->move_count_str_pos.y, WHITE, STEPS_COUNT_MSG);
-	nbr_to_dst_str(data->move_count, data->move_count_str);
-	mlx_string_put(data->mlx_ptr, data->win_ptr, data->move_count_value_pos.x,
-		data->move_count_value_pos.y, WHITE, data->move_count_str);
+	data->timer.value = get_time(data->start_time);
+	display_one_info(data, &data->move_count);
+	display_one_info(data, &data->timer);
 	if (data->map.nb_enemies > 0)
-	{
-		mlx_string_put(data->mlx_ptr, data->win_ptr,
-			data->enemies_speed_str_pos.x, data->enemies_speed_str_pos.y,
-			WHITE, ENEMIES_SPEED_MSG);
-		us_to_sec_ms_char(data->enemies_speed, data->enemies_speed_str);
-		mlx_string_put(data->mlx_ptr, data->win_ptr,
-			data->enemies_speed_value_pos.x, data->enemies_speed_value_pos.y,
-			WHITE, data->enemies_speed_str);
-	}
+		display_one_info(data, &data->enemies_speed);
 }

@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 16:33:39 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/10 17:15:24 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 15:33:12 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,30 +82,29 @@ void	init_enemies(t_data *data)
 	}
 	data->map.enemies = malloc(sizeof(t_enemy) * (data->map.nb_enemies));
 	if (data->map.enemies == NULL)
-		end_program(data, FAILED_ON_MALLOC_ENEMIES, FAILED_ON_MALLOC_MSG);
+		end_program(data, ENEMIES_MALLOC_FAILED, FAILED_ON_MALLOC_MSG);
 	set_initial_enemies_pos(data);
 }
 
-int	deal_enemies(t_data *data)
+void	deal_enemies(t_data *data)
 {
 	size_t	i;
 	size_t	x;
 	size_t	y;
 	t_enemy	*enemies;
 
-	i = 0;
+	if (get_time(data->start_time) < data->last_move_time
+		+ (data->enemies_speed.value / data->map.nb_enemies))
+		return ;
+	i = data->map.enemies_moves_turn_over % data->map.nb_enemies;
 	enemies = data->map.enemies;
-	while (i < data->map.nb_enemies)
+	if (can_move(data, &enemies[i]))
 	{
-		if (can_move(data, &enemies[i]))
-		{
-			x_y_by_direction(enemies[i].pos, enemies[i].direction, &x, &y);
-			enemies_moves(data, &enemies[i], x, y);
-			if (rand() % 2 == 0)
-				enemies[i].direction = rand() % 4;
-		}
-		i++;
+		x_y_by_direction(enemies[i].pos, enemies[i].direction, &x, &y);
+		enemies_moves(data, &enemies[i], x, y);
+		if (rand() % 2 == 0)
+			enemies[i].direction = rand() % 4;
 	}
-	data->last_move_timings = get_time(data->start_timings);
-	return (0);
+	data->map.enemies_moves_turn_over++;
+	data->last_move_time = get_time(data->start_time);
 }
