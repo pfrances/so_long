@@ -6,3 +6,4 @@ so_long
 /libraries/*minilibx*
 *.txt
 *.sh
+.gitignore
