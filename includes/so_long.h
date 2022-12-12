@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/12 16:12:55 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 17:28:27 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,14 @@ typedef enum e_error
 	TO_MUCH_EXIT,
 	WRONG_SHAPE,
 	UNDEFINED_CHARACTER,
-	MAP_TOO_HIGH,
-	MAP_TOO_WIDE,
 	HAS_NO_PLAYER,
 	HAS_NO_EXIT,
 	HAS_NO_COLLECTIBLE,
 	FLOODED_MALLOC_FAILED,
 	MAP_NOT_PLAYABLE,
 	INIT_MLX_FAILED,
+	MAP_TOO_HIGH,
+	MAP_TOO_WIDE,
 	INIT_WINDOW_FAILED,
 	FAILED_AT_INIT_WALL_IMG,
 	FAILED_AT_INIT_PLAYER_IMG,

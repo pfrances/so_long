@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 09:47:22 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/12 15:45:35 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 18:34:47 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	end_program(t_data *data, t_error error, char *error_msg)
 	}
 	if (error > INITIAL_MAP_MALLOC_FAILED)
 		free_map(data->map.initial_map);
-	if (error >= INIT_WINDOW_FAILED)
+	if (error > INIT_MLX_FAILED)
 	{
 		mlx_destroy_display(data->mlx_ptr);
 		free(data->mlx_ptr);

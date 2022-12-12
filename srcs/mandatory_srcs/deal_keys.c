@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:47:44 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/09 14:12:07 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 18:53:39 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	player_moves(t_data *data, size_t x, size_t y)
 	map = &data->map;
 	if (map->array[y][x] == WALL)
 		return ;
-	ft_printf("moves count: %ld\n", ++data->move_count);
+	ft_printf("Moves count: %ld\n", ++data->move_count);
 	if (map->array[y][x] == EXIT && map->nbr_of_collectibles == 0)
 		end_program(data, NONE, NULL);
 	else if (map->array[y][x] == EMPTY || map->array[y][x] == EXIT)

@@ -6,7 +6,7 @@
 #    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 12:06:24 by pfrances          #+#    #+#              #
-#    Updated: 2022/12/12 15:52:00 by pfrances         ###   ########.fr        #
+#    Updated: 2022/12/12 17:12:28 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,9 +62,7 @@ FT_PRINTF = $(FT_PRINTF_DIR)/ft_printf.a
 MLX_DIR = $(LIBS_DIR)/minilibx
 MLX_REPO = https://github.com/42Paris/minilibx-linux.git
 INCLUDES = -I includes
-SCREEN_WITDH = SCREEN_WITDH=$(shell xrandr | grep '*' | cut -d '*' -f1 | cut -d ' ' -f4 | sort | cut -d 'x' -f1)
-SCREEN_HEIGHT = SCREEN_HEIGHT=$(shell xrandr | grep '*' | cut -d '*' -f1 | cut -d ' ' -f4 | sort | cut -d 'x' -f2)
-DEFINE_VARS = -D $(ESC) -D $(W) -D $(A) -D $(S) -D $(D) -D $(FRAMERATE) -D $(ADJUST) -D $(SCREEN_WITDH) -D $(SCREEN_HEIGHT)
+DEFINE_VARS = -D $(ESC) -D $(W) -D $(A) -D $(S) -D $(D) -D $(FRAMERATE) -D $(ADJUST)
 
 #--------------------------------------------------------------------------#
 

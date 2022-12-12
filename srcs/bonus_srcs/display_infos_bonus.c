@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:32:13 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/12 15:54:17 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 19:03:27 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,10 @@ void	display_one_info(t_data *data, t_info *info)
 {
 	mlx_string_put(data->mlx_ptr, data->win_ptr, info->title_str_pos.x,
 		info->title_str_pos.y, info->color, info->title_str);
-	us_to_sec_ms_char(info->value, data->info_value_buff);
+	if (ft_strncmp(info->title_str, MOVES_COUNT_MSG, 12) == 0)
+		nbr_to_dst_str(info->value, data->info_value_buff);
+	else
+		us_to_sec_ms_char(info->value, data->info_value_buff);
 	mlx_string_put(data->mlx_ptr, data->win_ptr, info->value_pos.x,
 		info->value_pos.y, info->color, data->info_value_buff);
 }

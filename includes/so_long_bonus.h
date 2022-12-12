@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:25:31 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/12 15:51:01 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 19:04:10 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,12 @@
 # define ENEMIES_SPEED_MAX 200000
 # define ENEMIES_SPEED_STEP 200000
 # define ENEMIES_SPEED_MSG "ENEMIES SPEED:"
-# define STEPS_COUNT_MSG "STEP(S):"
+# define MOVES_COUNT_MSG "MOVES COUNT:"
 # define TIMER_MSG "TIME:"
 # define SIZE_MAX_DIGITS 20
 # define WHITE 0x00FFFFFF
 # define BLACK 0x00000000
 # define RED 0x00FF0000
-
-# ifndef SCREEN_HEIGHT
-#  define SCREEN_HEIGHT 1080
-# endif
-
-# ifndef SCREEN_WIDTH
-#  define SCREEN_WIDTH 1920
-# endif
 
 # define MAP_FILE_EXTENSION ".ber"
 # define WALL1_XPM_PATH "./xpm_files/wall_1.xpm"
@@ -127,8 +119,6 @@ typedef enum e_error
 	TO_MUCH_EXIT,
 	WRONG_SHAPE,
 	UNDEFINED_CHARACTER,
-	MAP_TOO_HIGH,
-	MAP_TOO_WIDE,
 	HAS_NO_PLAYER,
 	HAS_NO_EXIT,
 	HAS_NO_COLLECTIBLE,
@@ -137,6 +127,8 @@ typedef enum e_error
 	INITIAL_MAP_MALLOC_FAILED,
 	ENEMIES_MALLOC_FAILED,
 	INIT_MLX_FAILED,
+	MAP_TOO_HIGH,
+	MAP_TOO_WIDE,
 	INIT_WINDOW_FAILED,
 	WALL_IMG_MALLOC_FAILED,
 	PLAYER_IMG_MALLOC_FAILED,

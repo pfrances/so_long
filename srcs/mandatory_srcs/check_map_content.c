@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:46:33 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/08 15:55:19 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 17:17:14 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,6 @@ void	content_final_check(t_data *data)
 {
 	if (data->map.height < HEIGHT_MIN)
 		end_program(data, WRONG_SHAPE, WRONG_SHAPE_MSG);
-	data->window_height = data->map.height * BSIZE;
-	if (data->window_height > SCREEN_HEIGHT)
-		end_program(data, MAP_TOO_HIGH, MAP_TOO_HIGH_MSG);
-	data->window_width = data->map.width * BSIZE;
-	if (data->window_width > SCREEN_WIDTH)
-		end_program(data, MAP_TOO_WIDE, MAP_TOO_WIDE_MSG);
 	if (data->map.has_player == false)
 		end_program(data, HAS_NO_PLAYER, HAS_NO_PLAYER_MSG);
 	if (data->map.has_exit == false)

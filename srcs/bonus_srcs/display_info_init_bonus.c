@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 15:37:09 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/12 15:53:11 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 19:02:32 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	set_display_info_position(t_data *data)
 	y_pos = data->window_height - 5;
 	data->move_count.title_str_pos.x = 10;
 	data->move_count.title_str_pos.y = y_pos;
-	data->move_count.value_pos.x = data->move_count.title_str_pos.x + 60;
+	data->move_count.value_pos.x = data->move_count.title_str_pos.x + 80;
 	data->move_count.value_pos.y = y_pos;
 	data->timer.title_str_pos.x = data->window_width / 2;
 	data->timer.title_str_pos.y = y_pos;
@@ -40,7 +40,7 @@ void	set_display_info_position(t_data *data)
 
 void	set_titles_str(t_data *data)
 {
-	data->move_count.title_str = STEPS_COUNT_MSG;
+	data->move_count.title_str = MOVES_COUNT_MSG;
 	data->timer.title_str = TIMER_MSG;
 	data->enemies_speed.title_str = ENEMIES_SPEED_MSG;
 }
