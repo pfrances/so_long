@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:32:13 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/12 19:03:27 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/12 19:23:01 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	display_game_over(t_data *data)
 	size_t	sprite;
 
 	data->game_over = true;
-	x = ((data->window_width / 2) - 100) / BSIZE;
-	y = ((data->window_height / 2) - 150) / BSIZE;
+	x = ((data->window_width / 2) - 150) / BSIZE;
+	y = ((data->window_height / 2) - 100) / BSIZE;
 	sprite = data->last_sprite_time % NB_OF_GAME_OVER_IMG;
 	mlx_clear_window(data->mlx_ptr, data->win_ptr);
 	put_one_image(data, x, y, data->game_over_img[sprite]);
