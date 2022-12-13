@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:47:44 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/12 15:57:25 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/13 17:57:24 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	reset_game(t_data *data)
 	gettimeofday(&data->start_time, NULL);
 	data->last_reset_time = get_time(data->start_time);
 	data->last_move_time = get_time(data->start_time);
+	data->last_sprite_time = get_time(data->start_time);
 	data->map.enemies_moves_turn_over = 0;
 	data->move_count.value = 0;
 	data->game_over = false;
